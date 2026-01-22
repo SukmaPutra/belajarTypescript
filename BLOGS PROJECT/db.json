@@ -1,0 +1,102 @@
+{
+  "blogs": [
+    {
+      "id": "2",
+      "title": "Belajar HTML untuk Pemula - update",
+      "description": "HTML adalah fondasi utama dalam membangun website. Artikel ini membahas struktur dasar HTML dan contoh penggunaannya.",
+      "image": "https://images.unsplash.com/photo-1516116216624-53e697fedbea",
+      "createdAt": "2024-12-05T09:10:15.000Z"
+    },
+    {
+      "id": "5",
+      "title": "Tips Konsisten Belajar Coding",
+      "description": "Belajar coding butuh konsistensi. Artikel ini membahas tips mengatur waktu, belajar efektif, dan menghindari burnout.",
+      "image": "https://images.unsplash.com/photo-1498050108023-c5249f4df085",
+      "createdAt": "2024-12-20T12:40:00.000Z"
+    },
+    {
+      "id": "6",
+      "title": "Mengenal Frontend dan Backend",
+      "description": "Frontend berfokus pada tampilan website yang dilihat pengguna, sedangkan backend menangani logika, database, dan server.",
+      "image": "https://images.unsplash.com/photo-1555066931-4365d14bab8c",
+      "createdAt": "2024-12-22T08:05:10.000Z"
+    },
+    {
+      "id": "7",
+      "title": "Apa Itu Framework CSS?",
+      "description": "Framework CSS seperti Bootstrap dan Tailwind membantu developer membuat layout lebih cepat dan konsisten.",
+      "image": "https://images.unsplash.com/photo-1509395176047-4a66953fd231",
+      "createdAt": "2024-12-24T09:15:20.000Z"
+    },
+    {
+      "id": "8",
+      "title": "Belajar Git dan GitHub",
+      "description": "Git adalah tools version control yang wajib dikuasai programmer untuk mengelola perubahan kode.",
+      "image": "https://images.unsplash.com/photo-1618401471353-b98afee0b2eb",
+      "createdAt": "2024-12-26T10:25:30.000Z"
+    },
+    {
+      "id": "9",
+      "title": "Cara Membuat Website Responsif",
+      "description": "Website responsif dapat menyesuaikan tampilan di berbagai ukuran layar menggunakan media query dan flexbox.",
+      "image": "https://images.unsplash.com/photo-1492724441997-5dc865305da7",
+      "createdAt": "2024-12-28T11:35:40.000Z"
+    },
+    {
+      "id": "10",
+      "title": "Dasar-Dasar API untuk Pemula",
+      "description": "API memungkinkan aplikasi saling berkomunikasi. Artikel ini menjelaskan konsep REST API secara sederhana.",
+      "image": "https://images.unsplash.com/photo-1555949963-aa79dcee981c",
+      "createdAt": "2024-12-30T12:45:50.000Z"
+    },
+    {
+      "id": "11",
+      "title": "Mengenal JSON dalam Web Development",
+      "description": "JSON adalah format data ringan yang sering digunakan untuk pertukaran data antara client dan server.",
+      "image": "https://images.unsplash.com/photo-1587620962725-abab7fe55159",
+      "createdAt": "2025-01-02T08:10:05.000Z"
+    },
+    {
+      "id": "12",
+      "title": "Tips Debugging JavaScript",
+      "description": "Debugging membantu menemukan dan memperbaiki bug. Gunakan console.log dan DevTools browser secara efektif.",
+      "image": "https://images.unsplash.com/photo-1515879218367-8466d910aaa4",
+      "createdAt": "2025-01-04T09:20:15.000Z"
+    },
+    {
+      "id": "13",
+      "title": "Belajar Fetch API",
+      "description": "Fetch API digunakan untuk mengambil data dari server atau file JSON dan menampilkannya ke website.",
+      "image": "https://images.unsplash.com/photo-1521737604893-d14cc237f11d",
+      "createdAt": "2025-01-06T10:30:25.000Z"
+    },
+    {
+      "id": "14",
+      "title": "Membuat CRUD Sederhana",
+      "description": "CRUD (Create, Read, Update, Delete) adalah konsep dasar dalam pengelolaan data pada aplikasi web.",
+      "image": "https://images.unsplash.com/photo-1519389950473-47ba0277781c",
+      "createdAt": "2025-01-08T11:40:35.000Z"
+    },
+    {
+      "id": "15",
+      "title": "Roadmap Belajar Web Developer",
+      "description": "Roadmap ini membantu pemula memahami urutan belajar web development dari HTML hingga framework modern.",
+      "image": "https://images.unsplash.com/photo-1484417894907-623942c8ee29",
+      "createdAt": "2025-01-10T12:50:45.000Z"
+    },
+    {
+      "id": "a701255b-90da-4c95-b239-89187785f228",
+      "title": "test -ddghg",
+      "description": "testing sfnskfndsf",
+      "image": "https://unsplash.com/id/foto/seorang-pria-memegang-kamera-untuk-mengambil-gambar-VOewgYwGPLc",
+      "createdAt": "2026-01-06T06:10:14.203Z"
+    },
+    {
+      "id": "8d87a641-ccb4-4530-94d5-0540d2d0d822",
+      "title": "saddasasdasd",
+      "description": "testing sfnskfndsf",
+      "image": "https://images.unsplash.com/photo-1767436620092-7cab0404e444?q=80&w=1172&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      "createdAt": "2026-01-06T06:12:07.508Z"
+    }
+  ]
+}
