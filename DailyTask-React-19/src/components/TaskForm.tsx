@@ -27,12 +27,21 @@ const TaskForm = () => {
   });
 
   return (
-    <form action={formAction} className="mb-4 flex flex-col">
-      <input type="text" name="title" placeholder="New Task" className="border rounded w-full px-2 py-1" />
-      {message.error && <span className="text-red-500 text-sm">{message.error}</span>}
-      <button type="submit" disabled={isPending} className={`mt-2 bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 ${isPending ? "opacity-50 cursor-not-allowed" : ""}`}>
-        {isPending ? "adding ..." : "add task"}
-      </button>
+    <form action={formAction} className="mb-4 space-y-2">
+      <div className="flex gap-2">
+        <input type="text" name="title" placeholder="What needs to be done?" className="flex-1 border rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400" />
+        <button
+          type="submit"
+          disabled={isPending}
+          className={`px-4 py-2 rounded-lg text-white font-medium transition
+        ${isPending ? "bg-blue-300 cursor-not-allowed" : "bg-blue-500 hover:bg-blue-600"}
+      `}
+        >
+          {isPending ? "Adding..." : "Add"}
+        </button>
+      </div>
+
+      {message.error && <p className="text-red-500 text-sm">{message.error}</p>}
     </form>
   );
 };

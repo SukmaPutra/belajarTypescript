@@ -5,18 +5,14 @@ import type { Task } from "../types/Task";
 const TaskList = () => {
   const { optimisticTasks, deleteTask, updateTask } = useTaskContext();
 
-  const handleToggle = (task: Task) => {
-    updateTask(task.id, { completed: !task.completed });
-  };
-
-  const handleDelete = (taskId: number) => {
-    deleteTask(taskId);
-  };
+  if (optimisticTasks.length === 0) {
+    return <p className="text-center text-gray-400 text-sm">No tasks yet ✨</p>;
+  }
 
   return (
-    <div>
+    <div className="space-y-2">
       {optimisticTasks.map((task) => (
-        <TaskItem key={task.id} task={task} onToggle={() => handleToggle(task)} onDelete={() => handleDelete(task.id)} />
+        <TaskItem key={task.id} task={task} onToggle={() => updateTask(task.id, { completed: !task.completed })} onDelete={() => deleteTask(task.id)} />
       ))}
     </div>
   );
