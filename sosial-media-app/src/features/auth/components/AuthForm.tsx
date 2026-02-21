@@ -1,7 +1,7 @@
 import { useActionState } from "react";
 import { Link } from "react-router-dom";
-import { authSchema } from "../type/schema/authSchema";
-import {z} from "zod";
+import { authSchema } from "../../../type/schema/authSchema";
+import { z } from "zod";
 
 type AuthFormProps = {
   formType: "login" | "signup";
@@ -10,24 +10,21 @@ type AuthFormProps = {
 
 const AuthForm = ({ formType, onSubmit }: AuthFormProps) => {
   const login = formType === "login";
-  const [message, formAction, isPending] = useActionState(
-    async ( _: any, formData: FormData) => {
-        try {
-            const data = {
-                email: formData.get("email")?.toString() || "",
-                password: formData.get("password")?.toString() || ""
-            };
-            authSchema.parse(data); // Validate form data
-            return await onSubmit(data);
-        } catch (error) {
-            if(error instanceof z.ZodError){
-                return error.issues.map((err: { message: any; }) => err.message).join(", ");
-        }
-            return "An unexpected error occurred.";
-        }
-    }, null
-  )
-  
+  const [message, formAction, isPending] = useActionState(async (_: any, formData: FormData) => {
+    try {
+      const data = {
+        email: formData.get("email")?.toString() || "",
+        password: formData.get("password")?.toString() || "",
+      };
+      authSchema.parse(data); // Validate form data
+      return await onSubmit(data);
+    } catch (error) {
+      if (error instanceof z.ZodError) {
+        return error.issues.map((err: { message: any }) => err.message).join(", ");
+      }
+      return "An unexpected error occurred.";
+    }
+  }, null);
 
   return (
     <section
@@ -71,7 +68,7 @@ const AuthForm = ({ formType, onSubmit }: AuthFormProps) => {
                 type="submit"
                 className="w-full text-white bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
               >
-                {isPending? "submitting..." : (login ? "Login " : "Sign Up")}
+                {isPending ? "submitting..." : login ? "Login " : "Sign Up"}
               </button>
               <p className="text-sm font-light text-gray-500 dark:text-gray-400">
                 {login ? "Don't have an account yet?" : "Already have an account?"}{" "}

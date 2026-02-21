@@ -1,9 +1,29 @@
-const CreateProfilePage = () => {
-  return (
-    <div>
-      
-    </div>
-  )
-}
+import ProfileForm from "../components/profile/ProfileForm";
+import useCreateProfile from "../features/profile/hooks/useCreateProfile";
 
-export default CreateProfilePage
+const CreateProfilePage = () => {
+  const {
+    form,
+    errors,
+    loading,
+    setField,
+    toggleHobby,
+    setAvatarUrl,
+    onSubmit,
+  } = useCreateProfile();
+
+  return (
+    <ProfileForm
+      form={form}
+      errors={errors}
+      loading={loading}
+      setField={setField}
+      toggleHobby={toggleHobby}
+      setAvatarUrl={setAvatarUrl}
+      onSubmit={onSubmit}
+      submitLabel="Buat Profile"
+    />
+  );
+};
+
+export default CreateProfilePage;

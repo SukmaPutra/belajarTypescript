@@ -2,9 +2,11 @@ import { Link } from "react-router-dom";
 import { Home, Search, User } from "lucide-react";
 import LogoutButton from "../../features/auth/LogoutButton";
 import { useAuthStore } from "../../store/useAuthStore";
+import useAvatarUrl from "../../features/profile/hooks/useAvatarUrl";
 
 const Navbar = () => {
-  const {user} = useAuthStore();
+  const { user } = useAuthStore();
+  const avatarUrl = useAvatarUrl(user?.uid);
 
   return (
     <nav className="sticky top-0 z-50 w-full border-b border-gray-200 bg-white">
@@ -36,17 +38,30 @@ const Navbar = () => {
           ) : (
             <>
               {/* Home */}
-              <Link to={"/"}
-                 className="rounded-full p-2 hover:bg-gray-100">
-                  <Home size={22} />
-                
+              <Link to={"/"} className="rounded-full p-2 hover:bg-gray-100">
+                <Home size={22} />
               </Link>
 
               {/* Profile */}
-              <Link to={"/profile/123"}
-                className="flex h-9 w-9 items-center justify-center rounded-full bg-blue-500 text-white">
-                  <User size={18} />
-              </Link>
+              {user && (
+                <Link to={`/profile/${user.uid}`} className="rounded-full p-2 hover:bg-gray-100 flex items-center justify-center">
+                  <div className="h-8 w-8 overflow-hidden rounded-full bg-blue-600 flex items-center justify-center text-white flex-shrink-0">
+                    {avatarUrl ? (
+                      <img
+                        src={avatarUrl}
+                        alt="Profile"
+                        className="h-full w-full object-cover"
+                        // Jika URL gambar error (misal sudah dihapus), fallback ke icon
+                        onError={(e) => {
+                          e.currentTarget.style.display = "none";
+                        }}
+                      />
+                    ) : (
+                      <User size={18} />
+                    )}
+                  </div>
+                </Link>
+              )}
 
               {/* Logout Button */}
               <LogoutButton />
