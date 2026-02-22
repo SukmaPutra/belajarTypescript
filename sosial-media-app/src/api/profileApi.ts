@@ -1,13 +1,11 @@
 import type { CreateProfileInput, UpdateProfileInput, Profile } from "../type/profile";
-import { db } from "./firebase";
+import { db } from '@/core/api/firebase/firebaseInit'
 import { serverTimestamp, updateDoc, setDoc, doc, getDoc } from "firebase/firestore";
 
 // ─── Get Profile ───────────────────────────────────────────────────────────────
 
 /** Ambil profile berdasarkan userId. Return null jika tidak ditemukan. */
-export const getProfilesByUserId = async (
-  userId: string
-): Promise<Profile | null> => {
+export const getProfilesByUserId = async (userId: string): Promise<Profile | null> => {
   try {
     const docRef = doc(db, "profiles", userId);
     const docSnap = await getDoc(docRef);
@@ -33,10 +31,7 @@ export const getProfilesByUserId = async (
 // ─── Create Profile ────────────────────────────────────────────────────────────
 
 /** Buat profile baru untuk userId. Return document ID. */
-export const createProfile = async (
-  userId: string,
-  input: CreateProfileInput
-): Promise<string> => {
+export const createProfile = async (userId: string, input: CreateProfileInput): Promise<string> => {
   try {
     const docRef = doc(db, "profiles", userId);
 
@@ -56,10 +51,7 @@ export const createProfile = async (
 // ─── Update Profile ────────────────────────────────────────────────────────────
 
 /** Update profile yang sudah ada berdasarkan userId. */
-export const updateProfile = async (
-  userId: string,
-  input: UpdateProfileInput
-): Promise<void> => {
+export const updateProfile = async (userId: string, input: UpdateProfileInput): Promise<void> => {
   try {
     const docRef = doc(db, "profiles", userId);
 

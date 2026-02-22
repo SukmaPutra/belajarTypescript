@@ -1,6 +1,6 @@
 import type { Comment, CreateCommentInput } from "../type/Comment";
 import { commentSchema } from "../type/schema/commentSchema";
-import { db } from "./firebase";
+import { db } from '@/core/api/firebase/firebaseInit'
 import { collection, addDoc, getDocs, query, where, orderBy, serverTimestamp } from "firebase/firestore";
 
 const commentCollection = collection(db, "comments");

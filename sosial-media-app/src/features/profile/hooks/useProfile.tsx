@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { useAuthStore } from "../../../store/useAuthStore";
+import { useAuthStore } from "../../auth/store/useAuthStore";
 import { getProfilesByUserId } from "../../../api/profileApi";
 import type { Profile } from "../../../type/profile";
 

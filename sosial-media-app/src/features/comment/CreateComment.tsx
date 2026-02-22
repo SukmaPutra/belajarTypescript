@@ -1,5 +1,5 @@
 import { commentSchema } from "../../type/schema/commentSchema";
-import { useAuthStore } from "../../store/useAuthStore";
+import { useAuthStore } from "../auth/store/useAuthStore";
 import { useCommentStore } from "../../store/useCommentStore";
 import { useActionState } from "react";
 

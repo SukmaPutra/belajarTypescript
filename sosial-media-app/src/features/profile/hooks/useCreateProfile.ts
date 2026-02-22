@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { profileSchema, type ProfileFormValues } from "../../../type/schema/profileSchema";
 import type { Hobby } from "../../../constant/hobbies";
 import { createProfile } from "../../../api/profileApi";
-import { useAuthStore } from "../../../store/useAuthStore";
+import { useAuthStore } from "../../auth/store/useAuthStore";
 
 // ─── Types ─────────────────────────────────────────────────────────────────────
 
@@ -33,16 +33,14 @@ const useCreateProfile = () => {
    * Menghasilkan onChange handler untuk field teks (input & textarea).
    * ✅ Type-safe: tidak pakai `any`
    */
-  const setField =
-    (field: keyof Omit<ProfileFormValues, "hobbies" | "avatarUrl">) =>
-    (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-      setForm((prev) => ({ ...prev, [field]: e.target.value }));
+  const setField = (field: keyof Omit<ProfileFormValues, "hobbies" | "avatarUrl">) => (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    setForm((prev) => ({ ...prev, [field]: e.target.value }));
 
-      // Clear error field yang baru diedit
-      if (errors[field]) {
-        setErrors((prev) => ({ ...prev, [field]: undefined }));
-      }
-    };
+    // Clear error field yang baru diedit
+    if (errors[field]) {
+      setErrors((prev) => ({ ...prev, [field]: undefined }));
+    }
+  };
 
   /** Toggle pilihan hobby (tambah / hapus dari array) */
   const toggleHobby = (hobby: Hobby) => {
@@ -50,11 +48,7 @@ const useCreateProfile = () => {
       const already = prev.hobbies.includes(hobby);
       return {
         ...prev,
-        hobbies: (
-          already
-            ? prev.hobbies.filter((h) => h !== hobby)
-            : [...prev.hobbies, hobby]
-        ) as Hobby[],
+        hobbies: (already ? prev.hobbies.filter((h) => h !== hobby) : [...prev.hobbies, hobby]) as Hobby[],
       };
     });
 

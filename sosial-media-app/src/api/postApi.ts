@@ -1,6 +1,6 @@
 import type { Post } from "../type/post";
-import { db } from "./firebase";
-import { doc,getDoc,collection, addDoc, getDocs, query, orderBy, serverTimestamp } from "firebase/firestore";
+import { db } from '@/core/api/firebase/firebaseInit'
+import { doc, getDoc, collection, addDoc, getDocs, query, orderBy, serverTimestamp } from "firebase/firestore";
 
 const postCollection = collection(db, "posts");
 
@@ -28,17 +28,17 @@ export const getPosts = async (): Promise<Post[]> => {
     const q = query(postCollection, orderBy("createdAt", "desc"));
     const querySnapshot = await getDocs(q);
 
-    return querySnapshot.docs.map((doc) => ({
+    return querySnapshot.docs
+      .map((doc) => ({
         id: doc.id,
         ...(doc.data() as Post),
-    }))
-    .filter((post) => post.createdAt !== undefined);
+      }))
+      .filter((post) => post.createdAt !== undefined);
   } catch (error) {
     console.error("Error getting documents: ", error);
     throw error;
   }
 };
-
 
 //getPost by id
 export const getPostById = async (postId: string): Promise<Post | null> => {

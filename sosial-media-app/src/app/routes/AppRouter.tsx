@@ -1,12 +1,12 @@
 import { createBrowserRouter, Navigate } from "react-router-dom";
-import Layout from "../app/layout/Layout";
-import Home from "../app/pages/Home";
-import Login from "../features/auth/pages/LoginPage";
-import Signup from "../features/auth/pages/SignupPage";
-import PostPage from "../app/pages/PostPage";
-import ProfilePage from "../app/pages/ProfilePage";
-import CreateProfilePage from "../app/pages/CreateProfilePage";
-import NotFound from "../app/pages/NotFound";
+import Layout from "../layout/Layout";
+import Home from "../pages/Home";
+import Login from "../../features/auth/pages/LoginPage";
+import Signup from "../../features/auth/pages/SignupPage";
+import PostPage from "../pages/PostPage";
+import ProfilePage from "../pages/ProfilePage";
+import CreateProfilePage from "../pages/CreateProfilePage";
+import NotFound from "../pages/NotFound";
 
 const AppRouter = () => {
   const router = createBrowserRouter([
