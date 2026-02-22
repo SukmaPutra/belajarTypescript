@@ -1,19 +1,22 @@
-import { logout } from "../services/authService";
+// features/auth/components/LogoutButton.tsx
+import { Button } from '@/shared/components';
+import { useAuth } from '../hooks/useAuth';
 
-const LogoutButton = () => {
-  const handleLogout = async () => {
-    // Implement logout logic here
-    try {
-      await logout();
-    } catch (error) {
-      console.error("Logout failed:", error);
-    }
-  };
+interface LogoutButtonProps {
+  variant?: 'primary' | 'ghost' | 'danger';
+}
+
+export const LogoutButton = ({ variant = 'ghost' }: LogoutButtonProps) => {
+  const { logout, isLoading } = useAuth();
 
   return (
-    <button onClick={handleLogout} className="rounded-full px-4 py-1.5 text-sm font-medium bg-red-100 text-red-600 hover:bg-red-300">
-      Logout
-    </button>
+    <Button
+      variant={variant}
+      onClick={logout}
+      isLoading={isLoading}
+    >
+      Keluar
+    </Button>
   );
 };
 

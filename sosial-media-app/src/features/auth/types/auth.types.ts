@@ -1,46 +1,54 @@
+// features/auth/types/auth.types.ts
+import { Timestamp } from 'firebase/firestore';
 
-/**
- * Represents a user in the application
- */
-export interface User {
-  uid: string;
-  email: string;
+// Data user yang tersimpan di Firestore collection 'users'
+export interface UserProfile {
+  uid:          string;
+  email:        string;
+  username:     string;
+  displayName:  string;
+  photoURL:     string | null;
+  bio:          string;
+  isVerified:   boolean;
+  isPrivate:    boolean;
+
+  // Counter — disimpan di dokumen agar tidak perlu query setiap saat
+  followersCount: number;
+  followingCount: number;
+  postsCount:     number;
+
+  createdAt:  Timestamp;
+  updatedAt:  Timestamp;
 }
 
-/**
- * Auth store state interface
- */
+// State yang ada di Zustand store
 export interface AuthState {
-  user: User | null;
-  isLoading: boolean;
-  error: string | null;
+  user:        UserProfile | null;
+  isLoading:   boolean;
+  isInitialized: boolean; // true setelah onAuthStateChanged pertama kali terpanggil
+  error:       string | null;
 }
 
-/**
- * Auth context type for Context API (if used)
- */
-export interface AuthContextType extends AuthState {
-  isAuthenticated: boolean;
-  login: (email: string, password: string) => Promise<void>;
-  signup: (email: string, password: string) => Promise<void>;
-  logout: () => Promise<void>;
-  setUser: (user: User | null) => void;
-  setError: (error: string | null) => void;
-  clearError: () => void;
-}
-
-/**
- * Login/Signup form data
- */
-export interface AuthFormData {
-  email: string;
+// Payload untuk form login
+export interface LoginPayload {
+  email:    string;
   password: string;
 }
 
-/**
- * API response untuk auth operations
- */
-export interface AuthResponse {
-  success: boolean;
-  user: User;
+// Payload untuk form register
+export interface RegisterPayload {
+  email:       string;
+  password:    string;
+  confirmPassword: string;
+  username:    string;
+  displayName: string;
+}
+
+// Actions di store
+export interface AuthActions {
+  setUser:          (user: UserProfile | null) => void;
+  setLoading:       (isLoading: boolean) => void;
+  setError:         (error: string | null) => void;
+  setInitialized:   (isInitialized: boolean) => void;
+  clearAuth:        () => void;
 }

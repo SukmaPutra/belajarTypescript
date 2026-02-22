@@ -1,85 +1,104 @@
-// src/features/auth/services/authService.ts
-import {  auth } from '@/core/api/firebase/firebaseInit'
-import { createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut } from 'firebase/auth';
-import { FirebaseError } from 'firebase/app';
+// features/auth/services/authService.ts
+import {
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+  signOut,
+  onAuthStateChanged,
+  User,
+} from 'firebase/auth';
+import {
+  doc,
+  getDoc,
+  setDoc,
+  serverTimestamp,
+  query,
+  collection,
+  where,
+  getDocs,
+} from 'firebase/firestore';
+import { auth, db } from '@/core/api/firebase/firebaseInit';
+import { withFirestore } from '@/core/api/interceptors';
+import { DEFAULT_USER_PROFILE, USERS_COLLECTION } from '../constants/authConstants';
+import type { LoginPayload, RegisterPayload, UserProfile } from '../types/auth.types';
 
-/**
- * Sign up user dengan email dan password
- */
-export const signup = async (email: string, password: string) => {
-  try {
-    const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-    return {
-      success: true,
-      user: {
-        uid: userCredential.user.uid,
-        email: userCredential.user.email || '',
-      },
-    };
-  } catch (error) {
-    throw handleAuthError(error);
-  }
-};
+// ─── Register ────────────────────────────────────────────────────────────────
 
-/**
- * Login user dengan email dan password
- */
-export const login = async (email: string, password: string) => {
-  try {
-    const userCredential = await signInWithEmailAndPassword(auth, email, password);
-    return {
-      success: true,
-      user: {
-        uid: userCredential.user.uid,
-        email: userCredential.user.email || '',
-      },
-    };
-  } catch (error) {
-    throw handleAuthError(error);
-  }
-};
-
-/**
- * Logout user
- */
-export const logout = async (): Promise<void> => {
-  try {
-    await signOut(auth);
-  } catch (error) {
-    throw handleAuthError(error);
-  }
-};
-
-/**
- * Helper function untuk handle Firebase auth errors
- */
-const handleAuthError = (error: unknown): Error => {
-  if (error instanceof FirebaseError) {
-    switch (error.code) {
-      case 'auth/email-already-in-use':
-        return new Error('Email sudah terdaftar');
-      case 'auth/weak-password':
-        return new Error('Password terlalu lemah (minimal 6 karakter)');
-      case 'auth/invalid-email':
-        return new Error('Email tidak valid');
-      case 'auth/user-not-found':
-        return new Error('User tidak ditemukan');
-      case 'auth/wrong-password':
-        return new Error('Password salah');
-      case 'auth/too-many-requests':
-        return new Error('Terlalu banyak percobaan login, coba lagi nanti');
-      case 'auth/operation-not-allowed':
-        return new Error('Email/password login tidak diaktifkan');
-      default:
-        return new Error(error.message || 'Terjadi kesalahan authentication');
+export const registerService = async (payload: RegisterPayload) => {
+  return withFirestore(async () => {
+    // 1. Cek apakah username sudah dipakai
+    const usernameQuery = query(
+      collection(db, USERS_COLLECTION),
+      where('username', '==', payload.username.toLowerCase())
+    );
+    const usernameSnap = await getDocs(usernameQuery);
+    if (!usernameSnap.empty) {
+      throw new Error('Username sudah digunakan, coba username lain.');
     }
-  }
 
-  if (error instanceof Error) {
-    return error;
-  }
+    // 2. Buat akun di Firebase Auth
+    const credential = await createUserWithEmailAndPassword(
+      auth,
+      payload.email,
+      payload.password
+    );
 
-  return new Error('Terjadi kesalahan yang tidak diketahui');
+    // 3. Simpan profil user ke Firestore
+    const userProfile: UserProfile = {
+      uid:         credential.user.uid,
+      email:       payload.email,
+      username:    payload.username.toLowerCase(),
+      displayName: payload.displayName,
+      createdAt:   serverTimestamp() as any,
+      updatedAt:   serverTimestamp() as any,
+      ...DEFAULT_USER_PROFILE,
+    };
+
+    await setDoc(
+      doc(db, USERS_COLLECTION, credential.user.uid),
+      userProfile
+    );
+
+    return userProfile;
+  });
 };
 
-export { handleAuthError };
+// ─── Login ───────────────────────────────────────────────────────────────────
+
+export const loginService = async (payload: LoginPayload) => {
+  return withFirestore(async () => {
+    const credential = await signInWithEmailAndPassword(
+      auth,
+      payload.email,
+      payload.password
+    );
+    return credential.user;
+  });
+};
+
+// ─── Logout ──────────────────────────────────────────────────────────────────
+
+export const logoutService = async () => {
+  return withFirestore(async () => {
+    await signOut(auth);
+  });
+};
+
+// ─── Get User Profile ────────────────────────────────────────────────────────
+
+export const getUserProfileService = async (uid: string) => {
+  return withFirestore(async () => {
+    const snap = await getDoc(doc(db, USERS_COLLECTION, uid));
+    if (!snap.exists()) throw new Error('Profil tidak ditemukan.');
+    return snap.data() as UserProfile;
+  });
+};
+
+// ─── Auth State Observer ─────────────────────────────────────────────────────
+// Dipanggil sekali di AuthProvider untuk listen perubahan status login
+
+export const subscribeAuthState = (
+  callback: (user: User | null) => void
+) => {
+  return onAuthStateChanged(auth, callback);
+  // Return value-nya adalah unsubscribe function
+};

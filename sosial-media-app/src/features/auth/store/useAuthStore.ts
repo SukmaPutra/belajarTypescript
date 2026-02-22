@@ -1,57 +1,37 @@
-import { create } from "zustand";
-import { auth } from '@/core/api/firebase/firebaseInit'
-import { onAuthStateChanged, signOut, User } from "firebase/auth";
+// features/auth/store/authStore.ts
+import { create } from 'zustand';
+import { devtools } from 'zustand/middleware';
+import type { AuthState, AuthActions, UserProfile } from '../types/auth.types';
 
-interface AuthState {
-  user: User | null;
-  isLoading: boolean;
-  error : string | null;
-  setUser: (user: User | null) => void;
-  setError: (error: string | null) => void;
-  logout: () => Promise<void>;
-  clearError: () => void;
-}
+type AuthStore = AuthState & AuthActions;
 
-export const useAuthStore = create<AuthState>((set) => {
-  
-  onAuthStateChanged(auth, (user) => {
-    if (user) {
-      set({ 
-        user: user,
-        isLoading: false,
-        error: null
-      });
-    } else {
-      set({ 
-        user: null,
-        isLoading: false,
-        error: null
-      });
-    }
-  });
+const initialState: AuthState = {
+  user:          null,
+  isLoading:     true,   // true dari awal karena menunggu onAuthStateChanged
+  isInitialized: false,
+  error:         null,
+};
 
+export const useAuthStore = create<AuthStore>()(
+  devtools(
+    (set) => ({
+      ...initialState,
 
-  return {
-    user: null,
-    isLoading: false,
-    error: null,
+      setUser: (user: UserProfile | null) =>
+        set({ user }, false, 'auth/setUser'),
 
-    setUser: (user) => set({ user }),
+      setLoading: (isLoading: boolean) =>
+        set({ isLoading }, false, 'auth/setLoading'),
 
-    setError: (error) => set({ error }),
+      setError: (error: string | null) =>
+        set({ error }, false, 'auth/setError'),
 
-    clearError: () => set({ error: null }),
+      setInitialized: (isInitialized: boolean) =>
+        set({ isInitialized, isLoading: false }, false, 'auth/setInitialized'),
 
-    logout: async () => {
-      set({ isLoading: true, error: null });
-      try {
-        await signOut(auth);
-        set({ user: null, isLoading: false });
-      } catch (error) {
-        const errorMessage = error instanceof Error ? error.message : "Logout gagal";
-        set({ error: errorMessage, isLoading: false });
-        throw error;
-      }
-    },
-  };
-});
+      clearAuth: () =>
+        set({ ...initialState, isLoading: false, isInitialized: true }, false, 'auth/clearAuth'),
+    }),
+    { name: 'AuthStore' }
+  )
+);
