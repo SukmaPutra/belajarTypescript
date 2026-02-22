@@ -1,27 +1,70 @@
-import { createBrowserRouter } from 'react-router-dom';
+// app/routes/index.tsx
+import { Routes, Route } from 'react-router-dom';
+import { ROUTES } from '@/config/routes';
+import { AuthGuard, PublicGuard } from '@/features/auth';
 
-import { LoginPage, SignupPage, AuthGuard } from '@/features/auth';
+// Pages — Auth
+import { LoginPage }  from '@/features/auth/pages/LoginPage';
+import { SignupPage } from '@/features/auth/pages/SignupPage';
 
-export const router = createBrowserRouter([
+// Pages — App
+import { HomePage }         from '@/app/pages/Home';
+import { FeedPage }         from '@/app/pages/FeedPage';
+import { ProfilePage }      from '@/app/pages/ProfilePage';
+import { NotFoundPage }     from '@/app/pages/NotFound';
+import { LoadingPage }      from '@/app/pages/LoadingPage';
 
-  { path: '/login', element: <LoginPage /> },
 
-  { path: '/signup', element: <SignupPage /> },
 
-  {
+// Layout
+import { MainLayout }   from '@/app/layout/MainLayout';
 
-    path: '/dashboard',
+export const AppRoutes = () => {
+  return (
+    <Routes>
+      {/* ── Public Routes ── */}
+      <Route
+        path={ROUTES.HOME}
+        element={
+          <PublicGuard>
+            <HomePage />
+          </PublicGuard>
+        }
+      />
+      <Route
+        path={ROUTES.LOGIN}
+        element={
+          <PublicGuard>
+            <LoginPage />
+          </PublicGuard>
+        }
+      />
+      <Route
+        path={ROUTES.REGISTER}
+        element={
+          <PublicGuard>
+            <SignupPage />
+          </PublicGuard>
+        }
+      />
 
-    element: (
+      {/* ── Protected Routes — pakai MainLayout ── */}
+      <Route
+        element={
+          <AuthGuard>
+            <MainLayout />
+          </AuthGuard>
+        }
+      >
+        <Route path={ROUTES.FEED}          element={<FeedPage />} />
+        <Route path={ROUTES.PROFILE}       element={<ProfilePage />} />
+        <Route path={ROUTES.NOTIFICATIONS} element={<div>Notifikasi</div>} />
+        <Route path={ROUTES.MESSAGES}      element={<div>Pesan</div>} />
+        <Route path={ROUTES.EXPLORE}       element={<div>Explore</div>} />
+      </Route>
 
-      <AuthGuard requireAuth={true}>
-
-        <div>Dashboard - Protected Route</div>
-
-      </AuthGuard>
-
-    ),
-
-  },
-
-]);
+      {/* ── 404 ── */}
+      <Route path={ROUTES.NOT_FOUND} element={<NotFoundPage />} />
+    </Routes>
+  );
+};
