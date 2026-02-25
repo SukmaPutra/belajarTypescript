@@ -36,7 +36,7 @@ export const createPostService = async (content: string, author: UserSnippet, im
       imageURL,
       likesCount: 0,
       repostsCount: 0,
-      commentCount: 0,
+      commentsCount: 0,
       createdAt: serverTimestamp() as any,
       updatedAt: serverTimestamp() as any,
     };
@@ -69,7 +69,7 @@ export const getFeedService = async (lastDoc?: QueryDocumentSnapshot) => {
 
 // ─── Like / Unlike ────────────────────────────────────────────────────────────
 
-export const toogleLIkeService = async (postId: string, uid: string) => {
+export const toggleLikeService = async (postId: string, uid: string) => {
   return withFirestore(async () => {
     const likeRef = doc(db, POSTS_COLLECTION, postId, LIKES_SUBCOLLECTION, uid);
     const postRef = doc(db, POSTS_COLLECTION, postId);

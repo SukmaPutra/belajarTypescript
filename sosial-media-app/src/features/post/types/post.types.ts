@@ -10,7 +10,7 @@ export interface Post {
     imageURL: string | null;
     likesCount: number;
     repostsCount: number;
-    commentCount: number;
+    commentsCount: number;
     createdAt: Timestamp;
     updatedAt: Timestamp;
 
@@ -19,7 +19,7 @@ export interface Post {
 export interface Comment {
     id: string;
     postId: string;
-    author: string;
+    author: UserSnippet;
     content: string;
     createdAt: Timestamp;
 }
