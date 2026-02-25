@@ -9,12 +9,10 @@ import { SignupPage } from '@/features/auth/pages/SignupPage';
 
 // Pages — App
 import { HomePage }         from '@/app/pages/Home';
-import { FeedPage }         from '@/app/pages/FeedPage';
+import FeedPage          from '@/app/pages/Dashboard';
 import { ProfilePage }      from '@/app/pages/ProfilePage';
 import { NotFoundPage }     from '@/app/pages/NotFound';
 import { LoadingPage }      from '@/app/pages/LoadingPage';
-
-
 
 // Layout
 import { MainLayout }   from '@/app/layout/MainLayout';
