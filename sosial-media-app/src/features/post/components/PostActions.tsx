@@ -43,12 +43,12 @@ export const PostActions = ({post}: PostActionProps) => {
 
         {/* Repost */}
         <button
-          onClick={() => toggleRepost(post.repostsCount)}
+          onClick={() => toggleRepost(post.repostsCount ?? 0)}
           className={`flex items-center gap-1.5 text-sm transition-colors
             ${isReposted ? 'text-[#22c55e]' : 'text-[#94a3b8] hover:text-[#22c55e]'}`}
         >
           <span>🔁</span>
-          <span>{formatCount(post.repostsCount)}</span>
+          <span>{formatCount(post.repostsCount ?? 0)}</span>
         </button>
 
         {/* Comment */}
@@ -57,7 +57,7 @@ export const PostActions = ({post}: PostActionProps) => {
           className="flex items-center gap-1.5 text-sm text-[#94a3b8] hover:text-[#137fec] transition-colors"
         >
           <span>💬</span>
-          <span>{formatCount(post.commentsCount)}</span>
+          <span>{formatCount(post.commentsCount ?? 0)}</span>
         </button>
       </div>
 

@@ -1,9 +1,21 @@
-
 // core/utils/formatters.ts
 import { Timestamp } from 'firebase/firestore';
 
-export const formatRelativeTime = (date: Date | Timestamp): string => {
-  const d = date instanceof Timestamp ? date.toDate() : date;
+export const formatRelativeTime = (date: Date | Timestamp | any): string => {
+  let d: Date;
+
+  if (date instanceof Timestamp) {
+    d = date.toDate();
+  } else if (date?.toDate) {
+    d = date.toDate();
+  } else if (date?.seconds) {
+    d = new Date(date.seconds * 1000);
+  } else if (date instanceof Date) {
+    d = date;
+  } else {
+    return 'Baru saja';
+  }
+
   const diff = Date.now() - d.getTime();
   const seconds = Math.floor(diff / 1000);
 
@@ -17,7 +29,8 @@ export const formatRelativeTime = (date: Date | Timestamp): string => {
   });
 };
 
-export const formatCount = (count: number): string => {
+export const formatCount = (count: number = 0): string => {
+  if (!count) return '0';
   if (count >= 1_000_000) return `${(count / 1_000_000).toFixed(1)}M`;
   if (count >= 1_000)     return `${(count / 1_000).toFixed(1)}K`;
   return count.toString();

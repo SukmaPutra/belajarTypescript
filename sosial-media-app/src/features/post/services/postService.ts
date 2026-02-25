@@ -1,48 +1,44 @@
 // features/posts/services/postService.ts
 
 import { collection, doc, addDoc, getDoc, getDocs, updateDoc, deleteDoc, query, orderBy, limit, startAfter, serverTimestamp, increment, setDoc, runTransaction, QueryDocumentSnapshot } from "firebase/firestore";
-import { uploadBytes, ref, getDownloadURL } from "firebase/storage";
-import { db, storage } from "@/core/api/firebase/firebaseInit";
+import { db } from "@/core/api/firebase/firebaseInit";
 import { withFirestore } from "@/core/api/interceptors";
 import { POSTS_COLLECTION, LIKES_SUBCOLLECTION, REPOSTS_SUBCOLLECTION, COMMENTS_SUBCOLLECTION } from "../constants/postConstants";
 import type { Post, Comment } from "../types/post.types";
 import type { UserSnippet } from "@/shared/types";
+import {uploadImageToCloudinary } from '@/core/utils/cloudinaryService';
 
 const FEED_LIMIT = 10;
 
 // ─── Upload Gambar ────────────────────────────────────────────────────────────
 
-export const uploadPostImageService = async (file: File, uid: string): Promise<string> => {
-  // Path: posts/{uid}/{timestamp}_{filename}
-  const path = `posts/${uid}/${Date.now()}_${file.name}`;
-  const storageRef = ref(storage, path);
-  await uploadBytes(storageRef, file);
-  return getDownloadURL(storageRef);
-};
+
 
 // ─── Create Post ──────────────────────────────────────────────────────────────
-
-export const createPostService = async (content: string, author: UserSnippet, imageFile?: File | null) => {
+export const createPostService = async (
+  content: string,
+  author: UserSnippet,
+  imageFile?: File | null
+) => {
   return withFirestore(async () => {
     let imageURL: string | null = null;
 
     if (imageFile) {
-      imageURL = await uploadPostImageService(imageFile, author.uid);
+      imageURL = await uploadImageToCloudinary(imageFile); // ← Cloudinary
     }
 
-    const postData: Omit<Post, "id"> = {
+    const postData: Omit<Post, 'id'> = {
       author,
       content,
       imageURL,
-      likesCount: 0,
-      repostsCount: 0,
+      likesCount:    0,
+      repostsCount:  0,
       commentsCount: 0,
-      createdAt: serverTimestamp() as any,
-      updatedAt: serverTimestamp() as any,
+      createdAt:     serverTimestamp() as any,
+      updatedAt:     serverTimestamp() as any,
     };
 
     const docRef = await addDoc(collection(db, POSTS_COLLECTION), postData);
-
     return { id: docRef.id, ...postData } as Post;
   });
 };

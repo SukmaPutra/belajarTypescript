@@ -8,7 +8,7 @@ import { LoginPage }  from '@/features/auth/pages/LoginPage';
 import { SignupPage } from '@/features/auth/pages/SignupPage';
 
 // Pages — App
-import { HomePage }         from '@/app/pages/Home';
+import { Home }         from '@/app/pages/Home';
 import FeedPage          from '@/app/pages/Dashboard';
 import { ProfilePage }      from '@/app/pages/ProfilePage';
 import { NotFoundPage }     from '@/app/pages/NotFound';
@@ -25,7 +25,7 @@ export const AppRoutes = () => {
         path={ROUTES.HOME}
         element={
           <PublicGuard>
-            <HomePage />
+            <Home />
           </PublicGuard>
         }
       />
