@@ -1,21 +1,26 @@
 // app/routes/index.tsx
-import { Routes, Route } from 'react-router-dom';
-import { ROUTES } from '@/config/routes';
-import { AuthGuard, PublicGuard } from '@/features/auth';
+import { Routes, Route } from "react-router-dom";
+import { ROUTES } from "@/config/routes";
+import { AuthGuard, PublicGuard } from "@/features/auth";
 
 // Pages — Auth
-import { LoginPage }  from '@/features/auth/pages/LoginPage';
-import { SignupPage } from '@/features/auth/pages/SignupPage';
+import { LoginPage } from "@/features/auth/pages/LoginPage";
+import { SignupPage } from "@/features/auth/pages/SignupPage";
 
 // Pages — App
-import { Home }         from '@/app/pages/Home';
-import FeedPage          from '@/app/pages/Dashboard';
-import { ProfilePage }      from '@/app/pages/ProfilePage';
-import { NotFoundPage }     from '@/app/pages/NotFound';
-import { LoadingPage }      from '@/app/pages/LoadingPage';
+import { Home } from "@/app/pages/Home";
+import FeedPage from "@/app/pages/Dashboard";
+import { ProfilePage } from "@/app/pages/ProfilePage";
+import { NotFoundPage } from "@/app/pages/NotFound";
+import { LoadingPage } from "@/app/pages/LoadingPage";
+
+// upcoming feature
+import ExplorePage from "@/features/Explore/ExplorePage";
+import NotificationPage from "@/features/notification/NotificationPage";
+import MessagesPage from "@/features/message/MessagePage";
 
 // Layout
-import { MainLayout }   from '@/app/layout/MainLayout';
+import { MainLayout } from "@/app/layout/MainLayout";
 
 export const AppRoutes = () => {
   return (
@@ -54,11 +59,11 @@ export const AppRoutes = () => {
           </AuthGuard>
         }
       >
-        <Route path={ROUTES.FEED}          element={<FeedPage />} />
-        <Route path={ROUTES.PROFILE}       element={<ProfilePage />} />
-        <Route path={ROUTES.NOTIFICATIONS} element={<div>Notifikasi</div>} />
-        <Route path={ROUTES.MESSAGES}      element={<div>Pesan</div>} />
-        <Route path={ROUTES.EXPLORE}       element={<div>Explore</div>} />
+        <Route path={ROUTES.FEED} element={<FeedPage />} />
+        <Route path={ROUTES.PROFILE} element={<ProfilePage />} />
+        <Route path={ROUTES.NOTIFICATIONS} element={<NotificationPage />} />
+        <Route path={ROUTES.MESSAGES} element={<MessagesPage />} />
+        <Route path={ROUTES.EXPLORE} element={<ExplorePage />} />
       </Route>
 
       {/* ── 404 ── */}
