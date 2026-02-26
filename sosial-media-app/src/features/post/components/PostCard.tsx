@@ -10,7 +10,18 @@ interface PostCardProps {
 
 export const PostCard = ({post}: PostCardProps) => {
     return (
-        <Card hoverable={false} padding="md" className="flex flex-col gap-3">
+        <Card
+      hoverable={false}
+      padding="md"
+      className="
+        flex flex-col gap-3
+        border-b border-[#1e293b]
+        hover:bg-[#0f172a]/90
+        transition-colors duration-150
+        cursor-pointer
+      "
+    >
+
       {/* Header — Avatar + Info */}
       <div className="flex items-start gap-3">
         <Avatar
@@ -21,20 +32,23 @@ export const PostCard = ({post}: PostCardProps) => {
         />
         <div className="flex-1 min-w-0">
           <div className="flex items-center gap-2 flex-wrap">
-            <span className="font-semibold text-white text-sm">
+            <button className="font-semibold text-white text-sm hover:underline truncate">
               {post.author.displayName}
-            </span>
-            <span className="text-[#94a3b8] text-sm">
+            </button>
+            <span className="text-[#64748b] text-sm truncate">
               @{post.author.username}
             </span>
-            <span className="text-[#94a3b8] text-xs">·</span>
-            <span className="text-[#94a3b8] text-xs">
+            <span className="text-[#475569] text-xs">·</span>
+            <time
+              dateTime={post.createdAt.toDate().toISOString()}
+              className="text-[#64748b] text-xs hover:underline shrink-0"
+            >
               {formatRelativeTime(post.createdAt)}
-            </span>
+            </time>
           </div>
 
           {/* Konten */}
-          <p className="text-[#cbd5e1] text-sm mt-1 whitespace-pre-wrap break-words">
+          <p className="text-[#cbd5e1] text-sm mt-1 whitespace-pre-wrap wrap-break-words leading-relaxed">
             {post.content}
           </p>
         </div>
@@ -45,7 +59,8 @@ export const PostCard = ({post}: PostCardProps) => {
         <img
           src={post.imageURL}
           alt="post image"
-          className="w-full rounded-lg object-cover max-h-96 border border-[#334155]"
+          loading="lazy"
+          className="w-full rounded-xl object-cover max-h-96 border border-[#1e293b]"
         />
       )}
 

@@ -8,6 +8,9 @@ interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   size?: Size;
   isLoading?: boolean;
   fullWidth?: boolean;
+  rounded?: 'lg' | 'full';
+  icon?: React.ReactNode;
+  iconPosition?: 'left' | 'right';
 }
 
 const variantStyles: Record<Variant, string> = {
@@ -17,7 +20,7 @@ const variantStyles: Record<Variant, string> = {
   danger:    'bg-[#ef4444] hover:bg-[#dc2626] text-white',
 };
 
-const sizeStyles: Record<string, string> = {
+const sizeStyles: Record<Size, string> = {
   xs: 'px-2 py-1 text-xs',
   sm: 'px-3 py-1.5 text-sm',
   md: 'px-4 py-2 text-base',
@@ -30,18 +33,29 @@ export const Button = ({
   size = 'md',
   isLoading = false,
   fullWidth = false,
+  rounded = 'lg',
+  icon,
+  iconPosition = 'left',
   disabled,
   children,
   className = '',
   ...props
 }: ButtonProps) => {
+  const isDisabled = disabled || isLoading;
+
   return (
     <button
-      disabled={disabled || isLoading}
+      disabled={isDisabled}
+      aria-disabled={isDisabled}
+      aria-busy={isLoading}
       className={`
         inline-flex items-center justify-center gap-2
-        font-medium rounded-lg transition-colors duration-200
+        font-medium transition-all duration-200
         disabled:opacity-50 disabled:cursor-not-allowed
+        focus-visible:outline-none focus-visible:ring-2
+        focus-visible:ring-[#137fec] focus-visible:ring-offset-2
+        focus-visible:ring-offset-[#0d1117]
+        ${rounded === 'full' ? 'rounded-full' : 'rounded-lg'}
         ${variantStyles[variant]}
         ${sizeStyles[size]}
         ${fullWidth ? 'w-full' : ''}
@@ -49,8 +63,18 @@ export const Button = ({
       `}
       {...props}
     >
-      {isLoading && <LoadingSpinner size="sm" />}
-      {children}
+      {isLoading ? (
+        <>
+          <LoadingSpinner size="sm" />
+          <span aria-hidden="true">{children}</span>
+        </>
+      ) : (
+        <>
+          {icon && iconPosition === 'left' && <span aria-hidden="true">{icon}</span>}
+          {children}
+          {icon && iconPosition === 'right' && <span aria-hidden="true">{icon}</span>}
+        </>
+      )}
     </button>
   );
 };

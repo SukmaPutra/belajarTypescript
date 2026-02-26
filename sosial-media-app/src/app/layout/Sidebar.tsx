@@ -1,38 +1,49 @@
 // app/layout/Sidebar.tsx
 import { NavLink } from 'react-router-dom';
+import { Home, Compass, Bell, Mail, User } from 'lucide-react';
 import { ROUTES, generatePath } from '@/config/routes';
 import { LogoutButton } from '@/features/auth';
 import { useAuth } from '@/features/auth';
 
-const navItems = [
-  { label: 'Feed',       path: ROUTES.FEED,          icon: '🏠' },
-  { label: 'Explore',    path: ROUTES.EXPLORE,        icon: '🔍' },
-  { label: 'Notifikasi', path: ROUTES.NOTIFICATIONS,  icon: '🔔' },
-  { label: 'Pesan',      path: ROUTES.MESSAGES,       icon: '✉️'  },
+interface NavItem {
+  label: string;
+  path: string;
+  icon: React.ReactNode;
+  badge?: number;
+}
+
+const navItems: NavItem[] = [
+  { label: 'Feed',       path: ROUTES.FEED,          icon: <Home size={20} />    },
+  { label: 'Explore',    path: ROUTES.EXPLORE,        icon: <Compass size={20} /> },
+  { label: 'Notifikasi', path: ROUTES.NOTIFICATIONS,  icon: <Bell size={20} />    },
+  { label: 'Pesan',      path: ROUTES.MESSAGES,       icon: <Mail size={20} />    },
 ];
+
+const navLinkClass = ({ isActive }: { isActive: boolean }) => `
+  flex items-center gap-3 px-4 py-3 rounded-lg
+  text-sm font-medium transition-colors duration-200
+  ${isActive
+    ? 'bg-[#137fec]/10 text-[#137fec]'
+    : 'text-[#cbd5e1] hover:bg-[#1e293b] hover:text-white'
+  }
+`;
 
 export const Sidebar = () => {
   const { user } = useAuth();
 
   return (
-    <aside className="hidden lg:flex flex-col w-64 min-h-screen border-r border-[#334155] p-4 sticky top-0 h-screen">
-      {/* Nav Items */}
-      <nav className="flex flex-col gap-1 flex-1">
-        {navItems.map(item => (
-          <NavLink
-            key={item.path}
-            to={item.path}
-            className={({ isActive }) => `
-              flex items-center gap-3 px-4 py-3 rounded-lg
-              text-sm font-medium transition-colors duration-200
-              ${isActive
-                ? 'bg-[#137fec]/10 text-[#137fec]'
-                : 'text-[#cbd5e1] hover:bg-[#1e293b]'
-              }
-            `}
-          >
-            <span>{item.icon}</span>
+    <aside className="hidden lg:flex flex-col w-64 min-h-screen border-r border-[#1e293b] p-4 sticky top-0 h-screen">
+      <nav aria-label="Navigasi utama" className="flex flex-col gap-1 flex-1">
+        {navItems.map((item) => (
+          <NavLink key={item.path} to={item.path} className={navLinkClass}>
+            <span aria-hidden="true">{item.icon}</span>
             <span>{item.label}</span>
+            {item.badge !== undefined && item.badge > 0 && (
+              <span className="ml-auto bg-[#137fec] text-white text-xs font-semibold
+                px-1.5 py-0.5 rounded-full min-w-5 text-center leading-tight">
+                {item.badge > 99 ? '99+' : item.badge}
+              </span>
+            )}
           </NavLink>
         ))}
 
@@ -40,23 +51,16 @@ export const Sidebar = () => {
         {user && (
           <NavLink
             to={generatePath(ROUTES.PROFILE, { username: user.username })}
-            className={({ isActive }) => `
-              flex items-center gap-3 px-4 py-3 rounded-lg
-              text-sm font-medium transition-colors duration-200
-              ${isActive
-                ? 'bg-[#137fec]/10 text-[#137fec]'
-                : 'text-[#cbd5e1] hover:bg-[#1e293b]'
-              }
-            `}
+            className={navLinkClass}
           >
-            <span>👤</span>
+            <span aria-hidden="true"><User size={20} /></span>
             <span>Profil</span>
           </NavLink>
         )}
       </nav>
 
       {/* Logout di bawah */}
-      <div className="mt-auto pt-4 border-t border-[#334155]">
+      <div className="mt-auto pt-4 border-t border-[#1e293b]">
         <LogoutButton variant="ghost" />
       </div>
     </aside>

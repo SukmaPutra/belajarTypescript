@@ -13,6 +13,14 @@ export const AUTH_MESSAGES = {
   EMAIL_SENT:       'Email reset password telah dikirim.',
 } as const;
 
+export const AUTH_ERROR_MESSAGES = {
+  INVALID_CREDENTIALS: 'Email atau password salah.',
+  USER_NOT_FOUND:      'Pengguna tidak ditemukan.',
+  EMAIL_IN_USE:       'Email sudah digunakan.',
+  WEAK_PASSWORD:      'Password terlalu lemah.',
+  UNKNOWN_ERROR:      'Terjadi kesalahan. Silakan coba lagi.',
+} as const;
+
 // Firestore collection untuk user profile
 export const USERS_COLLECTION = 'users';
 

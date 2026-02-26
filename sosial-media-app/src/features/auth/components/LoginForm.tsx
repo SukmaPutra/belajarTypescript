@@ -1,9 +1,11 @@
 // src/features/auth/components/LoginForm.tsx
 import { useActionState } from 'react';
 import { Link } from 'react-router-dom';
-import { loginSchema, type LoginSchema } from '../schemas/authSchema';
+import { loginSchema } from '../schemas/authSchema';
 import { z } from 'zod';
 import { AUTH_ROUTES, AUTH_ERROR_MESSAGES } from '../constants/authConstants';
+
+type LoginSchema = z.infer<typeof loginSchema>;
 
 type LoginFormProps = {
   onSubmit: (data: LoginSchema) => Promise<string>;
@@ -60,7 +62,7 @@ const LoginForm = ({ onSubmit }: LoginFormProps) => {
           return error.message;
         }
         // Fallback untuk error tidak terduga
-        return AUTH_ERROR_MESSAGES.UNEXPECTED_ERROR;
+        return AUTH_ERROR_MESSAGES.UNKNOWN_ERROR;
       }
     },
     null
@@ -505,7 +507,7 @@ const LoginForm = ({ onSubmit }: LoginFormProps) => {
               >
                 Don't have an account?{' '}
                 <Link
-                  to={AUTH_ROUTES.SIGNUP}
+                  to={AUTH_ROUTES.REGISTER}
                   style={{
                     fontWeight: 600,
                     color: '#137fec',

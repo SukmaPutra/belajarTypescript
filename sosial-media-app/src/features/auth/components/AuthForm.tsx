@@ -1,11 +1,12 @@
 // features/auth/components/AuthForm.tsx
 import { useState } from 'react';
+import { Eye, EyeOff } from 'lucide-react';
 import { Button, FormField, Alert } from '@/shared/components';
 import { useAuth } from '../hooks/useAuth';
 import { useLoginForm, useRegisterForm } from '../hooks/useAuthForm';
 import type { LoginFormData, RegisterFormData } from '../schemas/authSchema';
 
-// ─── Login Form ───────────────────────────────────────────────────────────────
+// ─── Login Form ────────────────────────────────────────────────────────────
 
 export const LoginForm = () => {
   const { login, isLoading, error } = useAuth();
@@ -49,11 +50,14 @@ export const LoginForm = () => {
   );
 };
 
-// ─── Register Form ────────────────────────────────────────────────────────────
+// ─── Register Form ─────────────────────────────────────────────────────────
 
 export const RegisterForm = () => {
   const { register: registerAuth, isLoading, error } = useAuth();
   const { register, handleSubmit, formState: { errors } } = useRegisterForm();
+
+  const [showPassword, setShowPassword]               = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   const onSubmit = async (data: RegisterFormData) => {
     await registerAuth(data);
@@ -63,6 +67,7 @@ export const RegisterForm = () => {
     <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">
       {error && <Alert type="error" message={error} />}
 
+      {/* Nama Tampilan */}
       <FormField
         label="Nama Tampilan"
         placeholder="Nama Kamu"
@@ -71,6 +76,7 @@ export const RegisterForm = () => {
         {...register('displayName')}
       />
 
+      {/* Username */}
       <FormField
         label="Username"
         placeholder="username_kamu"
@@ -80,6 +86,7 @@ export const RegisterForm = () => {
         {...register('username')}
       />
 
+      {/* Email */}
       <FormField
         label="Email"
         type="email"
@@ -89,23 +96,39 @@ export const RegisterForm = () => {
         {...register('email')}
       />
 
-      <FormField
-        label="Password"
-        type="password"
-        placeholder="Minimal 6 karakter"
-        error={errors.password?.message}
-        required
-        {...register('password')}
-      />
+      {/* Password — dengan toggle show/hide */}
+      <div className="relative">
+        <FormField
+          label="Password"
+          type={showPassword ? 'text' : 'password'}
+          placeholder="Minimal 8 karakter"
+          error={errors.password?.message}
+          required
+          {...register('password')}
+        />
+        <TogglePasswordButton
+          show={showPassword}
+          onToggle={() => setShowPassword((p) => !p)}
+          hasError={!!errors.password}
+        />
+      </div>
 
-      <FormField
-        label="Konfirmasi Password"
-        type="password"
-        placeholder="Ulangi password"
-        error={errors.confirmPassword?.message}
-        required
-        {...register('confirmPassword')}
-      />
+      {/* Konfirmasi Password — dengan toggle show/hide */}
+      <div className="relative">
+        <FormField
+          label="Konfirmasi Password"
+          type={showConfirmPassword ? 'text' : 'password'}
+          placeholder="Ulangi password"
+          error={errors.confirmPassword?.message}
+          required
+          {...register('confirmPassword')}
+        />
+        <TogglePasswordButton
+          show={showConfirmPassword}
+          onToggle={() => setShowConfirmPassword((p) => !p)}
+          hasError={!!errors.confirmPassword}
+        />
+      </div>
 
       <Button
         type="submit"
@@ -118,3 +141,25 @@ export const RegisterForm = () => {
     </form>
   );
 };
+
+// ─── Helper ────────────────────────────────────────────────────────────────
+
+interface TogglePasswordButtonProps {
+  show: boolean;
+  onToggle: () => void;
+  hasError?: boolean;
+}
+
+const TogglePasswordButton = ({ show, onToggle, hasError }: TogglePasswordButtonProps) => (
+  <button
+    type="button"
+    onClick={onToggle}
+    aria-label={show ? 'Sembunyikan password' : 'Tampilkan password'}
+    className={`
+      absolute right-3 text-[#475569] hover:text-[#94a3b8] transition-colors
+      ${hasError ? 'bottom-7' : 'bottom-2.5'}
+    `}
+  >
+    {show ? <EyeOff size={15} /> : <Eye size={15} />}
+  </button>
+);

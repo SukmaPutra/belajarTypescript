@@ -47,8 +47,8 @@ export const Avatar = ({
         // Fallback — inisial atau ikon default
         <div className={`
           ${sizeMap[size]} rounded-full
-          bg-[#334155] flex items-center justify-center
-          text-[#94a3b8] font-semibold text-sm
+          bg-[#1d3557] flex items-center justify-center
+          text-[#acb7c6] font-semibold text-sm
         `}>
           {alt.charAt(0).toUpperCase()}
         </div>

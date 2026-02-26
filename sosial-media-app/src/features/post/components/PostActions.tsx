@@ -1,6 +1,7 @@
 // features/posts/components/PostActions.tsx
 import { useState } from 'react';
-import { formatCount } from '@/core/utils/formatters';
+import { Heart, MessageCircle, Repeat2, Send } from 'lucide-react';
+import { ActionButton } from './ActionButton';
 import { usePostActions } from '../hooks/usePostActions';
 import type { Post } from '../types/post.types';
 
@@ -28,77 +29,107 @@ export const PostActions = ({post}: PostActionProps) => {
     };
 
     return (
-         <div className="flex flex-col gap-3">
+        <div className="flex flex-col gap-3">
       {/* Action Buttons */}
-      <div className="flex items-center gap-4">
+      <div className="flex items-center gap-1">
         {/* Like */}
-        <button
+        <ActionButton
+          icon={
+            isLiked
+              ? <Heart size={16} className="fill-rose-500 text-rose-500" />
+              : <Heart size={16} />
+          }
+          count={post.likesCount}
           onClick={() => toggleLike(post.likesCount)}
-          className={`flex items-center gap-1.5 text-sm transition-colors
-            ${isLiked ? 'text-[#ef4444]' : 'text-[#94a3b8] hover:text-[#ef4444]'}`}
-        >
-          <span>{isLiked ? '❤️' : '🤍'}</span>
-          <span>{formatCount(post.likesCount)}</span>
-        </button>
-
-        {/* Repost */}
-        <button
-          onClick={() => toggleRepost(post.repostsCount ?? 0)}
-          className={`flex items-center gap-1.5 text-sm transition-colors
-            ${isReposted ? 'text-[#22c55e]' : 'text-[#94a3b8] hover:text-[#22c55e]'}`}
-        >
-          <span>🔁</span>
-          <span>{formatCount(post.repostsCount ?? 0)}</span>
-        </button>
+          active={isLiked}
+          activeColor="text-rose-500"
+          hoverColor="hover:text-rose-500"
+          hoverBg="hover:bg-rose-500/10"
+          label="Suka"
+        />
 
         {/* Comment */}
-        <button
+        <ActionButton
+          icon={<MessageCircle size={16} />}
+          count={post.commentsCount ?? 0}
           onClick={handleToggleComments}
-          className="flex items-center gap-1.5 text-sm text-[#94a3b8] hover:text-[#137fec] transition-colors"
-        >
-          <span>💬</span>
-          <span>{formatCount(post.commentsCount ?? 0)}</span>
-        </button>
+          active={showComments}
+          activeColor="text-sky-400"
+          hoverColor="hover:text-sky-400"
+          hoverBg="hover:bg-sky-400/10"
+          label="Komentar"
+        />
+
+        {/* Repost */}
+        <ActionButton
+          icon={<Repeat2 size={16} />}
+          count={post.repostsCount ?? 0}
+          onClick={() => toggleRepost(post.repostsCount ?? 0)}
+          active={isReposted}
+          activeColor="text-emerald-400"
+          hoverColor="hover:text-emerald-400"
+          hoverBg="hover:bg-emerald-400/10"
+          label="Repost"
+        />
       </div>
 
       {/* Comments Section */}
       {showComments && (
-        <div className="flex flex-col gap-3 pt-3 border-t border-[#334155]">
+        <div className="flex flex-col gap-3 pt-3 border-t border-[#1e293b]">
           {/* Input komentar */}
           <div className="flex gap-2">
             <input
               value={commentInput}
-              onChange={e => setCommentInput(e.target.value)}
-              onKeyDown={e => e.key === 'Enter' && handleAddComment()}
+              onChange={(e) => setCommentInput(e.target.value)}
+              onKeyDown={(e) => e.key === 'Enter' && handleAddComment()}
               placeholder="Tulis komentar..."
-              className="flex-1 bg-[#0f172a] border border-[#334155] rounded-lg
-                px-3 py-2 text-sm text-white placeholder:text-[#94a3b8]
-                focus:outline-none focus:ring-1 focus:ring-[#137fec]"
+              className="
+                flex-1 bg-[#0f172a] border border-[#1e293b] rounded-lg
+                px-3 py-2 text-sm text-white placeholder:text-[#475569]
+                focus:outline-none focus:ring-1 focus:ring-sky-500/50
+                transition-colors
+              "
             />
             <button
               onClick={handleAddComment}
               disabled={!commentInput.trim()}
-              className="px-3 py-2 bg-[#137fec] text-white text-sm rounded-lg
-                disabled:opacity-50 hover:bg-[#0d66c2] transition-colors"
+              aria-label="Kirim komentar"
+              className="
+                flex items-center justify-center gap-1.5
+                px-3 py-2 bg-sky-500 text-white text-sm rounded-lg
+                hover:bg-sky-400 disabled:opacity-40 disabled:cursor-not-allowed
+                transition-colors duration-150
+              "
             >
-              Kirim
+              <Send size={15} />
+              <span className="hidden sm:inline">Kirim</span>
             </button>
           </div>
 
           {/* List komentar */}
           {isLoadingComments ? (
-            <p className="text-[#94a3b8] text-sm">Memuat komentar...</p>
+            <div className="flex flex-col gap-2">
+              {[...Array(3)].map((_, i) => (
+                <div key={i} className="h-4 rounded-md bg-[#1e293b] animate-pulse" />
+              ))}
+            </div>
           ) : comments.length === 0 ? (
-            <p className="text-[#94a3b8] text-sm">Belum ada komentar.</p>
+            <p className="text-[#475569] text-sm text-center py-2">
+              Belum ada komentar. Jadilah yang pertama!
+            </p>
           ) : (
-            comments.map(comment => (
-              <div key={comment.id} className="flex gap-2">
-                <span className="text-sm font-medium text-[#137fec]">
-                  @{comment.author.username}
-                </span>
-                <span className="text-sm text-[#cbd5e1]">{comment.content}</span>
-              </div>
-            ))
+            <div className="flex flex-col gap-2.5">
+              {comments.map((comment) => (
+                <div key={comment.id} className="flex gap-2 items-start">
+                  <span className="text-sm font-semibold text-sky-400 shrink-0">
+                    @{comment.author.username}
+                  </span>
+                  <span className="text-sm text-[#cbd5e1] leading-relaxed">
+                    {comment.content}
+                  </span>
+                </div>
+              ))}
+            </div>
           )}
         </div>
       )}

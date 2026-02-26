@@ -72,7 +72,7 @@ const PostItem = ({ id, title, content, author, userId, createdAt }: PostProps) 
               {" "}
               {/* ⭐ Ubah dari space-x-3 ke space-x-4 */}
               {/* Wrapper Avatar */}
-              <div className="w-12 h-12 rounded-full border border-slate-200 bg-slate-100 flex items-center justify-center overflow-hidden flex-shrink-0">
+              <div className="w-12 h-12 rounded-full border border-slate-200 bg-slate-100 flex items-center justify-center overflow-hidden shrink-0">
                 {" "}
                 {/* ⭐ Ubah dari w-10 h-10 ke w-12 h-12 */}
                 {avatarUrl ? (
