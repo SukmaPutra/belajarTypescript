@@ -10,7 +10,7 @@ import { SignupPage } from "@/features/auth/pages/SignupPage";
 // Pages — App
 import { Home } from "@/app/pages/Home";
 import FeedPage from "@/app/pages/Dashboard";
-import { ProfilePage } from "@/app/pages/ProfilePage";
+import { Profile } from "@/app/pages/Profile";
 import { NotFoundPage } from "@/app/pages/NotFound";
 import { LoadingPage } from "@/app/pages/LoadingPage";
 
@@ -60,7 +60,7 @@ export const AppRoutes = () => {
         }
       >
         <Route path={ROUTES.FEED} element={<FeedPage />} />
-        <Route path={ROUTES.PROFILE} element={<ProfilePage />} />
+        <Route path={ROUTES.PROFILE} element={<Profile />} />
         <Route path={ROUTES.NOTIFICATIONS} element={<NotificationPage />} />
         <Route path={ROUTES.MESSAGES} element={<MessagesPage />} />
         <Route path={ROUTES.EXPLORE} element={<ExplorePage />} />

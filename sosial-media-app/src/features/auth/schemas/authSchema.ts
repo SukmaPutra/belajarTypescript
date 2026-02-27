@@ -62,10 +62,7 @@ export const registerSchema = z
       .regex(/\S/, 'Nama tampilan tidak boleh hanya spasi'),
     password: z
       .string()
-      .min(8, 'Password minimal 8 karakter')
-      .regex(/[A-Z]/, 'Password harus mengandung minimal 1 huruf kapital')
-      .regex(/[0-9]/, 'Password harus mengandung minimal 1 angka')
-      .regex(/[!@#$%^&*(),.?":{}|<>_\-\\[\]/`~;'+=]/, 'Password harus mengandung minimal 1 karakter spesial'),
+      .min(8, 'Password minimal 8 karakter'),
     confirmPassword: z
       .string()
       .min(1, 'Konfirmasi password wajib diisi'),

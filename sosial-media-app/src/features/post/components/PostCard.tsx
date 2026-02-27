@@ -1,6 +1,6 @@
 // features/posts/components/PostCard.tsx
 import { Avatar, Card } from '@/shared/components';
-import { formatRelativeTime } from '@/core/utils/formatters';
+import { formatRelativeTime, toDate } from '@/core/utils/formatters';
 import { PostActions } from './PostActions';
 import type { Post } from '../types/post.types';
 
@@ -40,7 +40,7 @@ export const PostCard = ({post}: PostCardProps) => {
             </span>
             <span className="text-[#475569] text-xs">·</span>
             <time
-              dateTime={post.createdAt.toDate().toISOString()}
+              dateTime={toDate(post.createdAt).toISOString()}
               className="text-[#64748b] text-xs hover:underline shrink-0"
             >
               {formatRelativeTime(post.createdAt)}

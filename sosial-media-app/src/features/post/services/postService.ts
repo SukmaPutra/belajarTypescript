@@ -24,7 +24,7 @@ export const createPostService = async (
     let imageURL: string | null = null;
 
     if (imageFile) {
-      imageURL = await uploadImageToCloudinary(imageFile); // ← Cloudinary
+      imageURL = await uploadImageToCloudinary(imageFile);
     }
 
     const postData: Omit<Post, 'id'> = {
@@ -38,7 +38,14 @@ export const createPostService = async (
       updatedAt:     serverTimestamp() as any,
     };
 
-    const docRef = await addDoc(collection(db, POSTS_COLLECTION), postData);
+    // Buat post + increment postsCount secara bersamaan
+    const [docRef] = await Promise.all([
+      addDoc(collection(db, POSTS_COLLECTION), postData),
+      updateDoc(doc(db, 'users', author.uid), {  // ← tambah ini
+        postsCount: increment(1)
+      }),
+    ]);
+
     return { id: docRef.id, ...postData } as Post;
   });
 };

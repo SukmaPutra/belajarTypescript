@@ -23,7 +23,7 @@ export const LoginForm = () => {
       <FormField
         label="Email"
         type="email"
-        placeholder="kamu@email.com"
+        placeholder="Anda@email.com"
         error={errors.email?.message}
         required
         {...register('email')}
@@ -70,7 +70,7 @@ export const RegisterForm = () => {
       {/* Nama Tampilan */}
       <FormField
         label="Nama Tampilan"
-        placeholder="Nama Kamu"
+        placeholder="Nama Anda"
         error={errors.displayName?.message}
         required
         {...register('displayName')}
@@ -79,7 +79,7 @@ export const RegisterForm = () => {
       {/* Username */}
       <FormField
         label="Username"
-        placeholder="username_kamu"
+        placeholder="username_anda"
         error={errors.username?.message}
         hint="Hanya huruf, angka, dan underscore"
         required
@@ -90,7 +90,7 @@ export const RegisterForm = () => {
       <FormField
         label="Email"
         type="email"
-        placeholder="kamu@email.com"
+        placeholder="Anda@email.com"
         error={errors.email?.message}
         required
         {...register('email')}

@@ -39,3 +39,11 @@ export const formatCount = (count: number = 0): string => {
 export const formatUsername = (username: string): string => {
   return username.startsWith('@') ? username : `@${username}`;
 };
+
+export const toDate = (value: any): Date => {
+  if (value instanceof Timestamp) return value.toDate();
+  if (value?.toDate)              return value.toDate();
+  if (value?.seconds)             return new Date(value.seconds * 1000);
+  if (value instanceof Date)      return value;
+  return new Date();
+};

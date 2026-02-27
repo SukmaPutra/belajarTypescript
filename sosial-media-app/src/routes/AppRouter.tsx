@@ -4,7 +4,7 @@ import Home from "../app/pages/Home";
 import Login from "../features/auth/pages/LoginPage";
 import Signup from "../features/auth/pages/SignupPage";
 import PostPage from "../app/pages/PostPage";
-import ProfilePage from "../app/pages/ProfilePage";
+import ProfilePage from "../app/pages/Profile";
 import CreateProfilePage from "../app/pages/CreateProfilePage";
 import NotFound from "../app/pages/NotFound";
 

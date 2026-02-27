@@ -56,7 +56,7 @@ const MOCK_POSTS = [
 
 // ─── Logo ─────────────────────────────────────────────────────────────────────
 export const Logo = () => (
-  <Link to="/" className="flex items-center gap-2.5 group">
+  <Link to={ROUTES.FEED} className="flex items-center gap-2.5 group">
     <div className="
       w-8 h-8 rounded-lg bg-[#137fec]
       flex items-center justify-center
