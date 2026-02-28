@@ -6,6 +6,7 @@ import { useAuthStore }    from '@/features/auth/store/useAuthStore';
 import { useProfileStore } from '../store/profileStore';
 import { editProfileService } from '../services/profileService';
 import { editProfileSchema, type EditProfileFormData } from '../schemas/profileSchema';
+import { UserProfile } from '@/features/auth';
 
 export const useEditProfile = (onSuccess?: () => void) => {
   const { user, setUser } = useAuthStore();
@@ -37,11 +38,18 @@ export const useEditProfile = (onSuccess?: () => void) => {
     }
 
     // Update store auth & profile sekaligus
-    const newProfile = { ...user, ...updated };
-    setUser(newProfile as any);
-    setProfile(newProfile as any);
+    const updateProfile: UserProfile = {
+      ...user, 
+      displayName:updated.displayName ?? user.displayName,
+      username: updated.username ?? user.username,
+      bio: updated.bio ?? user.bio,
+      photoURL: updated.photoURL ?? user.photoURL,
+    }
+    setUser(updateProfile);
+    setProfile(updateProfile);
     onSuccess?.();
-  }, [user, profile]);
+
+  }, [user, profile, form, setUser, setProfile, onSuccess]);
 
   return {
     form,

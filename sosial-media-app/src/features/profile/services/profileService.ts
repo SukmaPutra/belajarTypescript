@@ -1,5 +1,5 @@
 // features/profile/services/profileService.ts
-import { doc, getDoc, getDocs, updateDoc, collection, query, where, orderBy, serverTimestamp, setDoc, deleteDoc, increment } from "firebase/firestore";
+import { doc, getDoc, getDocs, updateDoc, collection, query, where, orderBy, serverTimestamp, setDoc, deleteDoc, increment, limit } from "firebase/firestore";
 import { db } from "@/core/api/firebase/firebaseInit";
 import { withFirestore } from "@/core/api/interceptors";
 import { uploadImageToCloudinary } from "@/core/utils/cloudinaryService";
@@ -33,7 +33,7 @@ export const getUserPostsService = async (uid:string) => {
             query(
                 collection(db, POSTS_COLLECTION),
                 where('author.uid', '==', uid),
-                orderBy('createdAt', 'desc')
+                orderBy('createdAt', 'desc'), limit(20)
             )
         );
         return snap.docs.map(d => ({ id: d.id, ...d.data() }) as Post)

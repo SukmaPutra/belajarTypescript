@@ -33,7 +33,7 @@ export const ProfilePage = () => {
     }
 
     return (
-        <div className='flex flex-col gab-4'>
+        <div className='flex flex-col gap-4'>
             {/* Header profil */}
             <ProfileHeader
                 profile={profile}

@@ -1,37 +1,38 @@
-// features/auth/store/authStore.ts
-import { create } from 'zustand';
-import { devtools } from 'zustand/middleware';
-import type { AuthState, AuthActions, UserProfile } from '../types/auth.types';
+  // features/auth/store/authStore.ts
+  import { create } from 'zustand';
+  import { devtools } from 'zustand/middleware';
+  import type { AuthState, AuthActions, UserProfile } from '../types/auth.types';
 
-type AuthStore = AuthState & AuthActions;
+  type AuthStore = AuthState & AuthActions;
 
-const initialState: AuthState = {
-  user:          null,
-  isLoading:     true,   // true dari awal karena menunggu onAuthStateChanged
-  isInitialized: false,
-  error:         null,
-};
+  const initialState: AuthState = {
+    user:          null,
+    isLoading:     true,   // true dari awal karena menunggu onAuthStateChanged
+    isInitialized: false,
+    error:         null,
+    
+  };
 
-export const useAuthStore = create<AuthStore>()(
-  devtools(
-    (set) => ({
-      ...initialState,
+  export const useAuthStore = create<AuthStore>()(
+    devtools(
+      (set) => ({
+        ...initialState,
 
-      setUser: (user: UserProfile | null) =>
-        set({ user }, false, 'auth/setUser'),
+        setUser: (user: UserProfile | null) =>
+          set({ user }, false, 'auth/setUser'),
 
-      setLoading: (isLoading: boolean) =>
-        set({ isLoading }, false, 'auth/setLoading'),
+        setLoading: (isLoading: boolean) =>
+          set({ isLoading }, false, 'auth/setLoading'),
 
-      setError: (error: string | null) =>
-        set({ error }, false, 'auth/setError'),
+        setError: (error: string | null) =>
+          set({ error }, false, 'auth/setError'),
 
-      setInitialized: (isInitialized: boolean) =>
-        set({ isInitialized, isLoading: false }, false, 'auth/setInitialized'),
+        setInitialized: (isInitialized: boolean) =>
+          set({ isInitialized, isLoading: false }, false, 'auth/setInitialized'),
 
-      clearAuth: () =>
-        set({ ...initialState, isLoading: false, isInitialized: true }, false, 'auth/clearAuth'),
-    }),
-    { name: 'AuthStore' }
-  )
-);
+        clearAuth: () =>
+          set({ ...initialState, isLoading: false, isInitialized: true }, false, 'auth/clearAuth'),
+      }),
+      { name: 'AuthStore' }
+    )
+  );
