@@ -22,6 +22,7 @@ export interface Comment {
     author: UserSnippet;
     content: string;
     createdAt: Timestamp;
+    parentId?: string | null;
 }
 
 //untuk cek apakah user sudah like/repost
@@ -50,6 +51,7 @@ export interface PostActions{
     setError:(error:string|null)=> void;
     setHasMore: (hasMore:boolean)=>void;
     setLastDoc: (lastDoc:unknown)=>void;
+    prependPost: (post: Post) => void;
     reset: ()=>void;
 
 }

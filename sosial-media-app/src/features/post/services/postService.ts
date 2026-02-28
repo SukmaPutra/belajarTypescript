@@ -1,18 +1,23 @@
 // features/posts/services/postService.ts
 
-import { collection, doc, addDoc, getDoc, getDocs, updateDoc, deleteDoc, query, orderBy, limit, startAfter, serverTimestamp, increment, setDoc, runTransaction, QueryDocumentSnapshot } from "firebase/firestore";
+import {
+  collection, doc, addDoc, getDoc, getDocs, updateDoc,
+  query, orderBy, limit, startAfter, serverTimestamp,
+  increment, runTransaction, QueryDocumentSnapshot
+} from "firebase/firestore";
 import { db } from "@/core/api/firebase/firebaseInit";
 import { withFirestore } from "@/core/api/interceptors";
-import { POSTS_COLLECTION, LIKES_SUBCOLLECTION, REPOSTS_SUBCOLLECTION, COMMENTS_SUBCOLLECTION } from "../constants/postConstants";
+import {
+  POSTS_COLLECTION,
+  LIKES_SUBCOLLECTION,
+  REPOSTS_SUBCOLLECTION,
+  COMMENTS_SUBCOLLECTION
+} from "../constants/postConstants";
 import type { Post, Comment } from "../types/post.types";
 import type { UserSnippet } from "@/shared/types";
-import {uploadImageToCloudinary } from '@/core/utils/cloudinaryService';
+import { uploadImageToCloudinary } from '@/core/utils/cloudinaryService';
 
 const FEED_LIMIT = 10;
-
-// ─── Upload Gambar ────────────────────────────────────────────────────────────
-
-
 
 // ─── Create Post ──────────────────────────────────────────────────────────────
 export const createPostService = async (
@@ -38,10 +43,9 @@ export const createPostService = async (
       updatedAt:     serverTimestamp() as any,
     };
 
-    // Buat post + increment postsCount secara bersamaan
     const [docRef] = await Promise.all([
       addDoc(collection(db, POSTS_COLLECTION), postData),
-      updateDoc(doc(db, 'users', author.uid), {  // ← tambah ini
+      updateDoc(doc(db, 'users', author.uid), {
         postsCount: increment(1)
       }),
     ]);
@@ -50,19 +54,37 @@ export const createPostService = async (
   });
 };
 
-// ─── Get Feed (Paginated) ─────────────────────────────────────────────────────
+// ─── Get Post By ID ───────────────────────────────────────────────────────────
+export const getPostByIdService = async (postId: string ) => {
+  return withFirestore(async () => {
+    const snap = await getDoc(doc(db, POSTS_COLLECTION, postId))
 
+    if (!snap.exists()) throw new Error("Post tidak ditemukan");
+
+    return {id:snap.id, ...snap.data()} as Post;
+
+  })
+
+}
+
+// ─── Get Feed (Paginated) ─────────────────────────────────────────────────────
 export const getFeedService = async (lastDoc?: QueryDocumentSnapshot) => {
   return withFirestore(async () => {
-    let q = query(collection(db, POSTS_COLLECTION), orderBy("createdAt", "desc"), limit(FEED_LIMIT));
-
-    // Kalau ada lastDoc, mulai dari sana (cursor pagination)
-    if (lastDoc) {
-      q = query(collection(db, POSTS_COLLECTION), orderBy("createdAt", "desc"), startAfter(lastDoc), limit(FEED_LIMIT));
-    }
+    const q = lastDoc
+      ? query(
+          collection(db, POSTS_COLLECTION),
+          orderBy("createdAt", "desc"),
+          startAfter(lastDoc),
+          limit(FEED_LIMIT)
+        )
+      : query(
+          collection(db, POSTS_COLLECTION),
+          orderBy("createdAt", "desc"),
+          limit(FEED_LIMIT)
+        );
 
     const snap = await getDocs(q);
-    const posts = snap.docs.map((d) => ({ id: d.id, ...d.data() }) as Post);
+    const posts = snap.docs.map(d => ({ id: d.id, ...d.data() }) as Post);
     const newLastDoc = snap.docs[snap.docs.length - 1] ?? null;
     const hasMore = snap.docs.length === FEED_LIMIT;
 
@@ -71,54 +93,54 @@ export const getFeedService = async (lastDoc?: QueryDocumentSnapshot) => {
 };
 
 // ─── Like / Unlike ────────────────────────────────────────────────────────────
-
 export const toggleLikeService = async (postId: string, uid: string) => {
   return withFirestore(async () => {
     const likeRef = doc(db, POSTS_COLLECTION, postId, LIKES_SUBCOLLECTION, uid);
     const postRef = doc(db, POSTS_COLLECTION, postId);
 
-    // Gunakan transaction agar counter & like record selalu sinkron
-    await runTransaction(db, async (transaction) => {
+    const liked = await runTransaction(db, async (transaction) => {
       const likeSnap = await transaction.get(likeRef);
 
       if (likeSnap.exists()) {
-        // Sudah like → unlike
         transaction.delete(likeRef);
         transaction.update(postRef, { likesCount: increment(-1) });
-        return { liked: false };
+        return false;
       } else {
-        // Belum like → like
         transaction.set(likeRef, { uid, createdAt: serverTimestamp() });
         transaction.update(postRef, { likesCount: increment(1) });
-        return { liked: true };
+        return true;
       }
     });
+
+    return { liked };
   });
 };
 
 // ─── Repost ───────────────────────────────────────────────────────────────────
-
 export const toggleRepostService = async (postId: string, uid: string) => {
   return withFirestore(async () => {
     const repostRef = doc(db, POSTS_COLLECTION, postId, REPOSTS_SUBCOLLECTION, uid);
     const postRef   = doc(db, POSTS_COLLECTION, postId);
 
-    await runTransaction(db, async (transaction) => {
+    const reposted = await runTransaction(db, async (transaction) => {
       const repostSnap = await transaction.get(repostRef);
 
       if (repostSnap.exists()) {
         transaction.delete(repostRef);
         transaction.update(postRef, { repostsCount: increment(-1) });
+        return false;
       } else {
         transaction.set(repostRef, { uid, createdAt: serverTimestamp() });
         transaction.update(postRef, { repostsCount: increment(1) });
+        return true;
       }
     });
+
+    return { reposted };
   });
 };
 
 // ─── Cek Status Like & Repost User ───────────────────────────────────────────
-
 export const checkUserInteractionsService = async (
   postId: string,
   uid: string
@@ -136,18 +158,16 @@ export const checkUserInteractionsService = async (
   });
 };
 
-// ─── Comments ─────────────────────────────────────────────────────────────────
-
+// ─── Add Comment ──────────────────────────────────────────────────────────────
 export const addCommentService = async (
   postId: string,
   content: string,
   author: UserSnippet
 ) => {
   return withFirestore(async () => {
-    const postRef      = doc(db, POSTS_COLLECTION, postId);
-    const commentsRef  = collection(db, POSTS_COLLECTION, postId, COMMENTS_SUBCOLLECTION);
+    const postRef     = doc(db, POSTS_COLLECTION, postId);
+    const commentsRef = collection(db, POSTS_COLLECTION, postId, COMMENTS_SUBCOLLECTION);
 
-    // Tambah komentar + update counter secara bersamaan
     const [commentDoc] = await Promise.all([
       addDoc(commentsRef, {
         postId,
@@ -158,10 +178,14 @@ export const addCommentService = async (
       updateDoc(postRef, { commentsCount: increment(1) }),
     ]);
 
-    return { id: commentDoc.id } as Comment;
+    const updatePost = await getDoc(postRef);
+    const newCommentCount = updatePost.data()?.commentsCount as number;
+
+    return { id: commentDoc.id, commentsCount: newCommentCount } as Comment & {commentsCount:number};
   });
 };
 
+// ─── Get Comments ─────────────────────────────────────────────────────────────
 export const getCommentsService = async (postId: string) => {
   return withFirestore(async () => {
     const snap = await getDocs(
@@ -170,6 +194,6 @@ export const getCommentsService = async (postId: string) => {
         orderBy('createdAt', 'asc')
       )
     );
-    return snap.docs.map(d => ({ id: d.id, ...d.data() } as Comment));
+    return snap.docs.map(d => ({ id: d.id, ...d.data() }) as Comment);
   });
 };

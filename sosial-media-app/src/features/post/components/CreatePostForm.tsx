@@ -1,61 +1,91 @@
 // features/posts/components/CreatePostForm.tsx
-import { useEffect, useRef, useState } from 'react';
-import { ImagePlus, X } from 'lucide-react';
-import { Avatar, Button, Card } from '@/shared/components';
-import { useAuthStore } from '@/features/auth/store/useAuthStore';
-import { useCreatePost } from '../hooks/useCreatePost';
-import { LIMITS } from '@/shared/constant/index';
+import { useEffect, useRef, useState } from "react";
+import { ImagePlus, Send, X} from "lucide-react";
+import { Avatar, Button, Card, Toast } from "@/shared/components";
+import { useAuthStore } from "@/features/auth/store/useAuthStore";
+import { useCreatePost } from "../hooks/useCreatePost";
+import { LIMITS } from "@/shared/constant/index";
+import { useToast } from "@/shared/hooks/useToast";
 
 export const CreatePostForm = () => {
   const { user } = useAuthStore();
-  const fileRef  = useRef<HTMLInputElement>(null);
+  const fileRef = useRef<HTMLInputElement>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const [preview, setPreview] = useState<string | null>(null);
+  const { toast, hideToast } = useToast();
+
+  useEffect(() => {
+    return () => {
+      if (preview) URL.revokeObjectURL(preview);
+    };
+  }, [preview]);
 
   const { form, submit, isSubmitting } = useCreatePost(() => {
     setPreview(null);
   });
 
-  const { register, watch, setValue, formState: { errors } } = form;
-  const content = watch('content') ?? '';
+  const {
+    register,
+    watch,
+    setValue,
+    formState: { errors },
+  } = form;
+  const content = watch("content") ?? "";
 
   const isOverLimit = content.length > LIMITS.POST_MAX_CHARS;
   const isNearLimit = content.length > LIMITS.POST_MAX_CHARS * 0.9;
-  const isDisabled  = !content.trim() || isOverLimit;
+  const isDisabled = !content.trim() || isOverLimit;
+
+  
 
   // Auto-resize textarea
   useEffect(() => {
     const el = textareaRef.current;
     if (!el) return;
-    el.style.height = 'auto';
+    el.style.height = "auto";
     el.style.height = `${el.scrollHeight}px`;
   }, [content]);
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
-    setValue('image', file);
+
+    // Revoke URL lama sebelum buat yang baru
+    if (preview) URL.revokeObjectURL(preview);
+
+    setValue("image", file);
     setPreview(URL.createObjectURL(file));
   };
 
   const removeImage = () => {
-    setValue('image', null);
+    if (preview) URL.revokeObjectURL(preview);
+
+    setValue("image", null);
     setPreview(null);
-    if (fileRef.current) fileRef.current.value = '';
+    if (fileRef.current) fileRef.current.value = "";
   };
 
   if (!user) return null;
 
   // Gabungkan register ref dengan textareaRef untuk auto-resize
-  const { ref: registerRef, ...registerRest } = register('content');
+  const { ref: registerRef, ...registerRest } = register("content");
 
   return (
+    <>
+    {/* Toast notification */}
+      {toast && (
+        <div className="fixed bottom-4 right-4 z-50">
+          <Toast
+            key={toast.id}
+            type={toast.type}
+            message={toast.message}
+            onClose={hideToast}
+          />
+        </div>
+      )}
+    
     <Card padding="md" hoverable={false} className="flex gap-3">
-      <Avatar
-        src={user.photoURL}
-        alt={user.displayName}
-        size="md"
-      />
+      <Avatar src={user.photoURL} alt={user.displayName} size="md" />
 
       <form onSubmit={submit} className="flex-1 flex flex-col gap-3">
         {/* Textarea */}
@@ -73,18 +103,12 @@ export const CreatePostForm = () => {
         />
 
         {/* Error konten */}
-        {errors.content && (
-          <span className="text-rose-500 text-xs">{errors.content.message}</span>
-        )}
+        {errors.content && <span className="text-rose-500 text-xs">{errors.content.message}</span>}
 
         {/* Preview gambar */}
         {preview && (
           <div className="relative w-fit max-w-full">
-            <img
-              src={preview}
-              alt="preview"
-              className="max-h-48 rounded-lg border border-[#1e293b] object-cover"
-            />
+            <img src={preview} alt="preview" className="max-h-48 rounded-lg border border-[#1e293b] object-cover" />
             <button
               type="button"
               onClick={removeImage}
@@ -102,13 +126,7 @@ export const CreatePostForm = () => {
         <div className="flex items-center justify-between pt-2 border-t border-[#1e293b]">
           {/* Upload gambar */}
           <div>
-            <input
-              ref={fileRef}
-              type="file"
-              accept="image/*"
-              onChange={handleImageChange}
-              className="hidden"
-            />
+            <input ref={fileRef} type="file" accept="image/*" onChange={handleImageChange} className="hidden" />
             <button
               type="button"
               onClick={() => fileRef.current?.click()}
@@ -122,27 +140,19 @@ export const CreatePostForm = () => {
 
           <div className="flex items-center gap-3">
             {/* Character counter */}
-            <span className={`text-xs tabular-nums transition-colors ${
-              isOverLimit
-                ? 'text-rose-500 font-medium'
-                : isNearLimit
-                  ? 'text-amber-400'
-                  : 'text-[#475569]'
-            }`}>
+            <span className={`text-xs tabular-nums transition-colors ${isOverLimit ? "text-rose-500 font-medium" : isNearLimit ? "text-amber-400" : "text-[#475569]"}`}>
               {content.length}/{LIMITS.POST_MAX_CHARS}
             </span>
 
-            <Button
-              type="submit"
-              size="sm"
-              isLoading={isSubmitting}
-              disabled={isDisabled}
-            >
-              Post
+            <Button type="submit" size="sm" isLoading={isSubmitting} disabled={isDisabled}>
+              <Send size={15} />
+              Kirim
             </Button>
           </div>
         </div>
       </form>
     </Card>
+    
+    </>
   );
 };

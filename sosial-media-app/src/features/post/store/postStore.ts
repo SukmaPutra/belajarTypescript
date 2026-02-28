@@ -18,7 +18,7 @@ export const usePostStore = create<PostStore>()(
     (set) => ({
       ...initialState,
 
-      setPosts: (posts: any) => set({ posts }, false, "posts/setPosts"),
+      setPosts: (posts: Post[]) => set({ posts }, false, "posts/setPosts"),
 
       appendPosts: (posts) => set((state) => ({ posts: [...state.posts, ...posts] }), false, "posts/appendPosts"),
 
@@ -39,6 +39,8 @@ export const usePostStore = create<PostStore>()(
           false,
           "posts/removePost",
         ),
+
+      prependPost: (post: Post) => set((state) => ({ posts: [post, ...state.posts] }), false, "posts/prependPost"),
 
       setLoading: (isLoading) => set({ isLoading }, false, "posts/setLoading"),
       setError: (error) => set({ error }, false, "posts/setError"),

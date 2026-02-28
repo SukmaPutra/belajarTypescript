@@ -7,7 +7,7 @@ export const usePosts = () => {
   const {
     posts, isLoading, error, hasMore, lastDoc,
     setPosts, appendPosts, setLoading, setError,
-    setHasMore, setLastDoc, reset,
+    setHasMore, setLastDoc,
   } = usePostStore();
 
   // Load pertama kali
@@ -47,9 +47,11 @@ export const usePosts = () => {
   }, [hasMore, isLoading, lastDoc]);
 
   useEffect(() => {
+    // Hanya fetch jika store masih kosong
+  if (posts.length === 0) {
     loadInitial();
-    return () => reset(); // cleanup saat unmount
-  }, []);
+  }
+  }, [loadInitial]);
 
   return { posts, isLoading, error, hasMore, loadMore, refresh: loadInitial };
 };

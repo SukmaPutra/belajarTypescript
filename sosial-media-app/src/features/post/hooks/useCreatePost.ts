@@ -1,4 +1,4 @@
-// features/posts/hooks/useCreatePost.ts
+// useCreatePost.ts
 import { useCallback } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -6,10 +6,14 @@ import { useAuthStore } from '@/features/auth/store/useAuthStore';
 import { usePostStore } from '../store/postStore';
 import { createPostService } from '../services/postService';
 import { createPostSchema, type CreatePostData } from '../schemas/postSchema';
+import { useToast } from '@/shared/hooks/useToast';
+import { POST_MESSAGES } from '../constants/postConstants';
+
 
 export const useCreatePost = (onSuccess?: () => void) => {
   const { user } = useAuthStore();
-  const { setPosts, posts } = usePostStore();
+  const { prependPost } = usePostStore(); // ← hanya prependPost, hapus setPosts & posts
+  const {showToast} = useToast();
 
   const form = useForm<CreatePostData>({
     resolver: zodResolver(createPostSchema),
@@ -33,13 +37,16 @@ export const useCreatePost = (onSuccess?: () => void) => {
       data.image ?? null
     );
 
-    if (!success || !newPost) return;
+    if (!success || !newPost) {
+      showToast('error', error ?? POST_MESSAGES.CREATE_ERROR)
+      return};
 
-    // Prepend ke store agar langsung muncul di atas feed
-    setPosts([newPost, ...posts]);
+    prependPost(newPost); // ← ganti dari setPosts([newPost, ...posts])
     form.reset();
+    showToast('success', POST_MESSAGES.CREATE_SUCCESS)
     onSuccess?.();
-  }, [user, posts]);
+
+  }, [user, prependPost]); // ← posts sudah tidak ada di sini
 
   return {
     form,
