@@ -23,8 +23,8 @@ export const PostCard = ({ post }: PostCardProps) => {
       padding="md"
       className="
         flex flex-col gap-3
-        border-b border-[var(--color-border)]
-        hover:bg-[var(--color-elevated)]
+        border-b border-(--color-border)
+        hover:bg-(--color-elevated)
         transition-colors duration-150
         cursor-pointer
       "
@@ -44,20 +44,20 @@ export const PostCard = ({ post }: PostCardProps) => {
           <div className="flex items-center gap-2 flex-wrap">
             <Link
               to={profilePath}
-              className="font-semibold text-[var(--color-text-primary)] text-sm hover:underline truncate"
+              className="font-semibold text-(--color-text-primary) text-sm hover:underline truncate"
             >
               {post.author.displayName}
             </Link>
             <Link
               to={profilePath}
-              className="text-[var(--color-text-muted)] text-sm truncate hover:underline"
+              className="text-(--color-text-muted) text-sm truncate hover:underline"
             >
               @{post.author.username}
             </Link>
-            <span className="text-[var(--color-text-subtle)] text-xs">·</span>
+            <span className="text-(--color-text-subtle) text-xs">·</span>
             <time
               dateTime={toDate(post.createdAt).toISOString()}
-              className="text-[var(--color-text-muted)] text-xs shrink-0"
+              className="text-(--color-text-muted) text-xs shrink-0"
             >
               {formatRelativeTime(post.createdAt)}
             </time>
@@ -66,7 +66,7 @@ export const PostCard = ({ post }: PostCardProps) => {
           {/* Konten */}
           <Link to={postPath}>
             <p className="
-              text-[var(--color-text-secondary)] text-sm mt-1
+              text-(--color-text-secondary) text-sm mt-1
               whitespace-pre-wrap break-words leading-relaxed
             ">
               {post.content}
@@ -82,7 +82,7 @@ export const PostCard = ({ post }: PostCardProps) => {
             src={post.imageURL}
             alt="post image"
             loading="lazy"
-            className="w-full rounded-xl object-cover max-h-96 border border-[var(--color-border)]"
+            className="w-full rounded-xl object-cover max-h-96 border border-(--color-border)"
           />
         </Link>
       )}
