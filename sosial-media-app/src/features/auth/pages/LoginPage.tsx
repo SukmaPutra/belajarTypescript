@@ -6,8 +6,10 @@ import { useAuth } from '../hooks/useAuth';
 import { useLoginForm } from '../hooks/useAuthForm';
 import { ROUTES } from '@/config/routes';
 import type { LoginFormData } from '../schemas/authSchema';
+import useDocumentTitle from '@/shared/hooks/useDocumentTitle';
 
 export const LoginPage = () => {
+  useDocumentTitle("Login ")
   const { login, isLoading, error } = useAuth();
   const { register, handleSubmit, formState: { errors } } = useLoginForm();
   const [showPassword, setShowPassword] = useState(false);

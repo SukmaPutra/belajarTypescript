@@ -7,7 +7,7 @@ import {
   logoutService,
   registerService,
 } from '../services/authService';
-import { AUTH_MESSAGES, AUTH_ROUTES } from '../constants/authConstants';
+import {  AUTH_ROUTES } from '../constants/authConstants';
 import type { LoginPayload, RegisterPayload } from '../types/auth.types';
 
 export const useAuth = () => {
