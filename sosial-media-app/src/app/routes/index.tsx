@@ -13,7 +13,7 @@ import FeedPage from "@/app/pages/Dashboard";
 import { Profile } from "@/app/pages/Profile";
 import { NotFoundPage } from "@/app/pages/NotFound";
 import PostDetailPage from "@/features/post/pages/PostDetailPage";
-import { LoadingPage } from "@/app/pages/LoadingPage";
+
 
 // upcoming feature
 import ExplorePage from "@/features/Explore/ExplorePage";
