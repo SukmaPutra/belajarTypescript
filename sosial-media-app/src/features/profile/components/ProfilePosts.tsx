@@ -19,7 +19,7 @@ export const ProfilePosts = ({ posts, isLoading }: ProfilePostsProps) => {
 
   if (posts.length === 0) {
     return (
-      <div className="text-center py-10 text-[var(--color-text-muted)]">
+      <div className="text-center py-10 text-(--color-text-muted)">
         Belum ada postingan.
       </div>
     );

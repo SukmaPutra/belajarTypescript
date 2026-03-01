@@ -67,7 +67,7 @@ export const EditProfileModal = ({ isOpen, onClose, profile }: EditProfileModalP
 
         {/* Bio — textarea manual karena FormField tidak support textarea */}
         <div className="flex flex-col gap-1.5">
-          <label className="text-sm font-medium text-[var(--color-text-secondary)]">
+          <label className="text-sm font-medium text-(--color-text-secondary)]">
             Bio
           </label>
           <textarea
@@ -76,17 +76,17 @@ export const EditProfileModal = ({ isOpen, onClose, profile }: EditProfileModalP
             placeholder="Ceritakan tentang dirimu..."
             className="
               w-full rounded-lg px-4 py-2.5 text-sm resize-none
-              bg-[var(--color-input-bg)]
-              border border-[var(--color-input-border)]
-              text-[var(--color-text-primary)]
-              placeholder:text-[var(--color-text-subtle)]
+              bg-(--color-input-bg)]
+              border border-(--color-input-border)]
+              text-(--color-text-primary)]
+              placeholder:text-(--color-text-subtle)]
               focus:outline-none focus:ring-2 focus:ring-[#137fec]
               hover:border-[#137fec]/50
               transition-colors
             "
           />
           {errors.bio && (
-            <span className="text-[var(--color-error)] text-xs">{errors.bio.message}</span>
+            <span className="text-(--color-error)] text-xs">{errors.bio.message}</span>
           )}
         </div>
 

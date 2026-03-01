@@ -42,31 +42,31 @@ export const ProfileHeader = ({ profile, isOwnProfile, onEditClick }: ProfileHea
 
       {/* Info user */}
       <div className="flex flex-col gap-1">
-        <h1 className="text-xl font-bold text-[var(--color-text-primary)]">
+        <h1 className="text-xl font-bold text-(--color-text-primary)]">
           {profile.displayName}
         </h1>
-        <p className="text-[var(--color-text-muted)] text-sm">
+        <p className="text-(--color-text-muted)] text-sm">
           @{profile.username}
         </p>
         {profile.bio && (
-          <p className="text-[var(--color-text-secondary)] text-sm mt-2 leading-relaxed">
+          <p className="text-(--color-text-secondary)] text-sm mt-2 leading-relaxed">
             {profile.bio}
           </p>
         )}
       </div>
 
       {/* Stats */}
-      <div className="flex items-center gap-6 pt-2 border-t border-[var(--color-border)]">
+      <div className="flex items-center gap-6 pt-2 border-t border-(--color-border)]">
         {[
           { count: profile.postsCount,     label: 'Postingan' },
           { count: profile.followersCount, label: 'Pengikut'  },
           { count: profile.followingCount, label: 'Mengikuti' },
         ].map(({ count, label }) => (
           <div key={label} className="flex flex-col items-center">
-            <span className="text-[var(--color-text-primary)] font-bold">
+            <span className="text-(--color-text-primary)] font-bold">
               {formatCount(count)}
             </span>
-            <span className="text-[var(--color-text-muted)] text-xs">{label}</span>
+            <span className="text-(--color-text-muted)] text-xs">{label}</span>
           </div>
         ))}
       </div>

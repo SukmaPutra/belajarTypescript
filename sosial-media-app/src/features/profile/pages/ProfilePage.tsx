@@ -7,8 +7,12 @@ import { ProfilePosts }     from '../components/ProfilePosts';
 import { EditProfileModal } from '../components/EditProfileModal';
 import { useProfile }       from '../hooks/useProfile';
 import { ROUTES }           from '@/config/routes';
+import useDocumentTitle from '@/shared/hooks/useDocumentTitle';
+import { PAGE_TITLES } from '@/shared/constant/seo';
 
 export const ProfilePage = () => {
+    useDocumentTitle(PAGE_TITLES.PROFILE);
+    
     const { username } = useParams<{ username: string }>();
     const [isEditOpen, setIsEditOpen] = useState(false);
 
