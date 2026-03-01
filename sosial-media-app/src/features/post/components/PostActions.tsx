@@ -1,25 +1,25 @@
 // features/posts/components/PostActions.tsx
-import { useCallback, useState } from "react";
-import { Link } from "react-router-dom";
-import { Heart, MessageCircle, Repeat2, Send } from "lucide-react";
-import { ActionButton } from "./ActionButton";
-import { usePostActions } from "../hooks/usePostActions";
-import type { Post } from "../types/post.types";
-import { ROUTES, generatePath } from "@/config/routes";
+import { useCallback, useState } from 'react';
+import { Link } from 'react-router-dom';
+import { Heart, MessageCircle, Repeat2, Send } from 'lucide-react';
+import { ActionButton } from './ActionButton';
+import { usePostActions } from '../hooks/usePostActions';
+import type { Post } from '../types/post.types';
+import { ROUTES, generatePath } from '@/config/routes';
 
 interface PostActionProps {
   post: Post;
-   hideComments?: boolean;
+  hideComments?: boolean;
 }
 
 export const PostActions = ({ post, hideComments = false }: PostActionProps) => {
   const { isLiked, isReposted, comments, isLoadingComments, commentError, toggleLike, toggleRepost, fetchComments, addComment } = usePostActions(post.id);
-
   const [showComments, setShowComments] = useState(false);
-  const [commentInput, setCommentInput] = useState("");
+  const [commentInput, setCommentInput] = useState('');
 
-   const username = post?.author?.username;
-   const profilePath = username ? generatePath(ROUTES.PROFILE, { username }) : "#";
+  const profilePath = post?.author?.username
+    ? generatePath(ROUTES.PROFILE, { username: post.author.username })
+    : '#';
 
   const handleToggleComments = useCallback(() => {
     if (!showComments) fetchComments();
@@ -29,16 +29,18 @@ export const PostActions = ({ post, hideComments = false }: PostActionProps) => 
   const handleAddComment = useCallback(async () => {
     if (!commentInput.trim()) return;
     await addComment(commentInput.trim());
-    setCommentInput("");
+    setCommentInput('');
   }, [commentInput, addComment]);
 
   return (
     <div className="flex flex-col gap-3">
       {/* Action Buttons */}
       <div className="flex items-center gap-1">
-        {/* Like */}
         <ActionButton
-          icon={isLiked ? <Heart size={16} className="fill-rose-500 text-rose-500" /> : <Heart size={16} />}
+          icon={isLiked
+            ? <Heart size={16} className="fill-rose-500 text-rose-500" />
+            : <Heart size={16} />
+          }
           count={post.likesCount}
           onClick={() => toggleLike(post.likesCount)}
           active={isLiked}
@@ -48,7 +50,6 @@ export const PostActions = ({ post, hideComments = false }: PostActionProps) => 
           label="Suka"
         />
 
-        {/* Comment */}
         {!hideComments && (
           <ActionButton
             icon={<MessageCircle size={16} />}
@@ -62,7 +63,6 @@ export const PostActions = ({ post, hideComments = false }: PostActionProps) => 
           />
         )}
 
-        {/* Repost */}
         <ActionButton
           icon={<Repeat2 size={16} />}
           count={post.repostsCount ?? 0}
@@ -77,17 +77,20 @@ export const PostActions = ({ post, hideComments = false }: PostActionProps) => 
 
       {/* Comments Section */}
       {!hideComments && showComments && (
-        <div className="flex flex-col gap-3 pt-3 border-t border-[#1e293b]">
+        <div className="flex flex-col gap-3 pt-3 border-t border-[var(--color-border)]">
           {/* Input komentar */}
           <div className="flex gap-2">
             <input
               value={commentInput}
               onChange={(e) => setCommentInput(e.target.value)}
-              onKeyDown={(e) => e.key === "Enter" && handleAddComment()}
+              onKeyDown={(e) => e.key === 'Enter' && handleAddComment()}
               placeholder="Tulis komentar..."
               className="
-                flex-1 bg-[#0f172a] border border-[#1e293b] rounded-lg
-                px-3 py-2 text-sm text-white placeholder:text-[#475569]
+                flex-1 rounded-lg px-3 py-2 text-sm
+                bg-[var(--color-bg)]
+                border border-[var(--color-border)]
+                text-[var(--color-text-primary)]
+                placeholder:text-[var(--color-text-subtle)]
                 focus:outline-none focus:ring-1 focus:ring-sky-500/50
                 transition-colors
               "
@@ -98,8 +101,9 @@ export const PostActions = ({ post, hideComments = false }: PostActionProps) => 
               aria-label="Kirim komentar"
               className="
                 flex items-center justify-center gap-1.5
-                px-3 py-2 bg-sky-500 text-white text-sm rounded-lg
-                hover:bg-sky-400 disabled:opacity-40 disabled:cursor-not-allowed
+                px-3 py-2 rounded-lg text-sm
+                bg-sky-500 hover:bg-sky-400 text-white
+                disabled:opacity-40 disabled:cursor-not-allowed
                 transition-colors duration-150
               "
             >
@@ -108,37 +112,43 @@ export const PostActions = ({ post, hideComments = false }: PostActionProps) => 
             </button>
           </div>
 
-          {commentError && <p className="text-rose-500 text-xs">{commentError}</p>}
+          {commentError && (
+            <p className="text-[var(--color-error)] text-xs">{commentError}</p>
+          )}
 
           {/* List komentar */}
           {isLoadingComments ? (
             <div className="flex flex-col gap-2">
               {[...Array(3)].map((_, i) => (
-                <div key={i} className="h-4 rounded-md bg-[#1e293b] animate-pulse" />
+                <div key={i} className="h-4 rounded-md bg-[var(--color-surface)] animate-pulse" />
               ))}
             </div>
           ) : comments.length === 0 ? (
-            <p className="text-[#475569] text-sm text-center py-2">Belum ada komentar. Jadilah yang pertama!</p>
+            <p className="text-[var(--color-text-muted)] text-sm text-center py-2">
+              Belum ada komentar. Jadilah yang pertama!
+            </p>
           ) : (
             <div className="flex flex-col gap-2">
               {comments.map((comment) => (
-                <div 
-                  key={comment.id} 
+                <div
+                  key={comment.id}
                   className="
-                    bg-[#1e293b]/50 hover:bg-[#1e293b]/70 
-                    rounded-lg p-3 transition-colors duration-200
-                    border border-[#334155]/50 hover:border-[#475569]/50
-                    group
+                    rounded-lg p-3 group
+                    bg-[var(--color-surface)] hover:bg-[var(--color-elevated)]
+                    border border-[var(--color-border-sub)] hover:border-[var(--color-border)]
+                    transition-colors duration-200
                   "
                 >
                   <div className="flex gap-2">
-                    <Link 
+                    <Link
                       to={profilePath}
                       className="text-sm font-semibold text-sky-400 group-hover:text-sky-300 transition-colors shrink-0 hover:underline"
                     >
                       @{comment.author.username}
                     </Link>
-                    <span className="text-sm text-[#cbd5e1] leading-relaxed">{comment.content}</span>
+                    <span className="text-sm text-[var(--color-text-secondary)] leading-relaxed">
+                      {comment.content}
+                    </span>
                   </div>
                 </div>
               ))}

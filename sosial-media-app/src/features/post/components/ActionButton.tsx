@@ -1,6 +1,5 @@
-// ─── ActionButton ──────────────────────────────────────────────────────────
-
-import { formatCount } from "@/core/utils/formatters";
+// features/posts/components/ActionButton.tsx
+import { formatCount } from '@/core/utils/formatters';
 
 interface ActionButtonProps {
   icon: React.ReactNode;
@@ -21,15 +20,16 @@ export const ActionButton = ({
   activeColor,
   hoverColor,
   hoverBg,
-  label,
 }: ActionButtonProps) => (
   <button
-    aria-label={label}
     onClick={onClick}
     className={`
       flex items-center gap-1.5 text-xs rounded-full px-2 py-1.5
       transition-all duration-150 group
-      ${active ? activeColor : `text-[#475569] ${hoverColor}`}
+      ${active
+        ? activeColor
+        : `text-[var(--color-text-muted)] ${hoverColor}`
+      }
       ${hoverBg}
     `}
   >
