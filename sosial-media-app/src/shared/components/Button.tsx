@@ -56,7 +56,7 @@ export const Button = ({
         disabled:opacity-50 disabled:cursor-not-allowed
         focus-visible:outline-none focus-visible:ring-2
         focus-visible:ring-[#137fec] focus-visible:ring-offset-2
-        focus-visible:ring-offset-[var(--color-bg)]
+        focus-visible:ring-offset-(--color-bg)
         ${rounded === 'full' ? 'rounded-full' : 'rounded-lg'}
         ${variantStyles[variant]}
         ${sizeStyles[size]}

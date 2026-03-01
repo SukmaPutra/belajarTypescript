@@ -11,7 +11,7 @@ export { Alert }          from './Alert';
 
 
 // shared/hooks/index.ts
-export { useLocalStorage } from '../hooks/useLocalStorage';
+export { useSessionStorage } from '../hooks/useSessionStorage';
 export { useAsync }        from '../hooks/useAsync';
 export { useDebounce }     from '../hooks/useDebounce';
 export { usePagination }   from '../hooks/usePagination';

@@ -34,15 +34,15 @@ export const Toast = ({ type, message, duration = 3000, onClose }: ToastProps) =
   return (
     <div className={`
       flex items-center gap-3 px-4 py-3
-      bg-[var(--color-card)] border rounded-lg shadow-lg text-sm
+      bg-(--color-card) border rounded-lg shadow-lg text-sm
       min-w-70 max-w-sm
       ${toastStyles[type]}
     `}>
       <span className={`font-bold ${toastStyles[type]}`}>{icons[type]}</span>
-      <span className="flex-1 text-[var(--color-text-secondary)]">{message}</span>
+      <span className="flex-1 text-(--color-text-secondary)">{message}</span>
       <button
         onClick={onClose}
-        className="text-[var(--color-text-muted)] hover:text-[var(--color-text-primary)] transition-colors"
+        className="text-(--color-text-muted) hover:text-(--color-text-primary) transition-colors"
       >
         ✕
       </button>

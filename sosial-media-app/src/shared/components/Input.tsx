@@ -13,7 +13,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
       <div className="flex flex-col gap-1 w-full">
         <div className="relative flex items-center">
           {leftIcon && (
-            <span className="absolute left-3 text-[var(--color-text-muted)]">
+            <span className="absolute left-3 text-(--color-text-muted)">
               {leftIcon}
             </span>
           )}
@@ -21,16 +21,16 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
             ref={ref}
             className={`
               w-full
-              bg-[var(--color-input-bg)]
-              text-[var(--color-text-primary)]
+              bg-(--color-input-bg)
+              text-(--color-text-primary)
               border rounded-lg px-4 py-2.5
-              placeholder:text-[var(--color-text-muted)]
+              placeholder:text-(--color-text-muted)
               focus:outline-none focus:ring-2 focus:ring-[#137fec]
               transition-colors duration-200
               disabled:opacity-50 disabled:cursor-not-allowed
               ${error
                 ? "border-[#ef4444]"
-                : "border-[var(--color-input-border)] hover:border-[#137fec]/50"
+                : "border-(--color-input-border)] hover:border-[#137fec]/50"
               }
               ${leftIcon  ? "pl-10" : ""}
               ${rightIcon ? "pr-10" : ""}

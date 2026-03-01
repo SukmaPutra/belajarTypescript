@@ -46,19 +46,19 @@ export const Modal = ({ isOpen, onClose, title, children, size = 'md' }: ModalPr
       <div
         className={`
           relative z-50 w-full ${sizeMap[size]}
-          bg-[var(--color-card)] border border-[var(--color-border)]
+          bg-(--color-card) border border-(--color-border)
           rounded-xl shadow-xl
         `}
         onClick={e => e.stopPropagation()}
       >
         {title && (
-          <div className="flex items-center justify-between p-4 border-b border-[var(--color-border)]">
-            <h2 className="text-lg font-semibold text-[var(--color-text-primary)]">
+          <div className="flex items-center justify-between p-4 border-b border-(--color-border)">
+            <h2 className="text-lg font-semibold text-(--color-text-primary)">
               {title}
             </h2>
             <button
               onClick={onClose}
-              className="text-[var(--color-text-muted)] hover:text-[var(--color-text-primary)] transition-colors"
+              className="text-(--color-text-muted) hover:text-(--color-text-primary) transition-colors"
             >
               ✕
             </button>

@@ -41,14 +41,14 @@ export const Avatar = ({
         <img
           src={src}
           alt={alt}
-          className={`${sizeMap[size]} rounded-full object-cover bg-[var(--color-avatar-bg)]`}
+          className={`${sizeMap[size]} rounded-full object-cover bg-(--color-avatar-bg)`}
         />
       ) : (
         <div className={`
           ${sizeMap[size]} rounded-full
-          bg-[var(--color-avatar-bg)]
+          bg-(--color-avatar-bg)
           flex items-center justify-center
-          text-[var(--color-avatar-text)] font-semibold text-sm
+          text-(--color-avatar-text) font-semibold text-sm
         `}>
           {alt.charAt(0).toUpperCase()}
         </div>

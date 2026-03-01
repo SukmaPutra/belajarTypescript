@@ -20,13 +20,13 @@ export const FormField = ({
 }: FormFieldProps) => {
   return (
     <div className="flex flex-col gap-1.5 w-full">
-      <label className="text-sm font-medium text-[var(--color-text-secondary)]">
+      <label className="text-sm font-medium text-(--color-text-secondary)">
         {label}
         {required && <span className="text-[#ef4444] ml-1">*</span>}
       </label>
       <Input error={error} {...inputProps} />
       {hint && !error && (
-        <span className="text-xs text-[var(--color-text-muted)]">{hint}</span>
+        <span className="text-xs text-(--color-text-muted)">{hint}</span>
       )}
     </div>
   );
