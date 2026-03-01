@@ -4,8 +4,8 @@ const Footer = () => {
   return (
     <footer className="
       w-full
-      bg-[var(--color-surface)]
-      border-t border-[var(--color-border)]
+      bg-(--color-surface)
+      border-t border-(--color-border)
     ">
       <div className="
         mx-auto max-w-7xl px-6 py-5
@@ -18,13 +18,13 @@ const Footer = () => {
             w-2 h-2 rounded-full bg-[#137fec]
             shadow-[0_0_6px_rgb(19_127_236/0.6)]
           " />
-          <span className="text-sm font-semibold text-[var(--color-text-primary)] tracking-tight">
+          <span className="text-sm font-semibold text-(--color-text-primary) tracking-tight">
             SukmaPutra
           </span>
         </div>
 
         {/* Copy */}
-        <p className="text-xs text-[var(--color-text-muted)] text-center">
+        <p className="text-xs text-(--color-text-muted) text-center">
           Dibuat dengan{' '}
           <span className="text-[#137fec] font-medium">React</span>
           {' & '}
@@ -38,9 +38,9 @@ const Footer = () => {
               key={tech}
               className="
                 px-2.5 py-1 rounded-full text-xs font-medium
-                bg-[var(--color-elevated)]
-                text-[var(--color-text-muted)]
-                border border-[var(--color-border)]
+                bg-(--color-elevated)
+                text-(--color-text-muted)
+                border border-(--color-border)
               "
             >
               {tech}

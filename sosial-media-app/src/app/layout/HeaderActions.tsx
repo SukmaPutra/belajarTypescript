@@ -14,9 +14,9 @@ export const HeaderActions = () => {
         aria-label="Cari"
         className="
           p-2 rounded-full
-          text-[var(--color-text-muted)]
-          hover:text-[var(--color-text-primary)]
-          hover:bg-[var(--color-surface)]
+          text-(--color-text-muted)
+          hover:text-(--color-text-primary)
+          hover:bg-(--color-surface)
           transition-all duration-150
         "
       >

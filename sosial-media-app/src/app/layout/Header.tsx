@@ -11,7 +11,7 @@ export const Header = () => {
 
   return (
     <header
-      className="sticky top-0 z-20 border-b border-[var(--color-border)]"
+      className="sticky top-0 z-20 border-b border-(--color-border)"
       style={{ background: 'color-mix(in srgb, var(--color-bg) 80%, transparent)' }}
     >
       <div className="max-w-2xl mx-auto px-4 h-14 flex items-center justify-between">
@@ -31,7 +31,7 @@ export const Header = () => {
           ">
             <Zap size={16} className="text-white fill-white" />
           </div>
-          <span className="font-bold text-lg tracking-tight text-[var(--color-text-primary)]">
+          <span className="font-bold text-lg tracking-tight text-(--color-text-primary)">
             Somad
           </span>
         </Link>
