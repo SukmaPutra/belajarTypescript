@@ -1,8 +1,8 @@
 // features/profile/components/EditProfileModal.tsx
-import { useEffect, useRef, useState } from "react";
-import { Modal, FormField, Button, Avatar } from "@/shared/components";
-import { useEditProfile } from "../hooks/useEditProfile";
-import type { UserProfile } from "@/features/auth/types/auth.types";
+import { useEffect, useRef, useState } from 'react';
+import { Modal, FormField, Button, Avatar } from '@/shared/components';
+import { useEditProfile } from '../hooks/useEditProfile';
+import type { UserProfile } from '@/features/auth/types/auth.types';
 
 interface EditProfileModalProps {
   isOpen: boolean;
@@ -15,61 +15,79 @@ export const EditProfileModal = ({ isOpen, onClose, profile }: EditProfileModalP
   const [preview, setPreview] = useState<string | null>(profile.photoURL);
 
   const { form, submit, isSubmitting } = useEditProfile(onClose);
-  const {
-    register,
-    setValue,
-    formState: { errors },
-  } = form;
+  const { register, setValue, formState: { errors } } = form;
 
   const handlePhotoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
-
-    // Cleanup URL lama kalau bukan photoURL asli
-    if (preview && preview !== profile.photoURL) {
-      URL.revokeObjectURL(preview);
-    }
-
-    setValue("photoFile", file);
+    if (preview && preview !== profile.photoURL) URL.revokeObjectURL(preview);
+    setValue('photoFile', file);
     setPreview(URL.createObjectURL(file));
   };
 
-  // Dan cleanup saat modal close/unmount:
   useEffect(() => {
     return () => {
-      if (preview && preview !== profile.photoURL) {
-        URL.revokeObjectURL(preview);
-      }
+      if (preview && preview !== profile.photoURL) URL.revokeObjectURL(preview);
     };
   }, []);
 
   return (
     <Modal isOpen={isOpen} onClose={onClose} title="Edit Profil" size="md">
       <form onSubmit={submit} className="flex flex-col gap-4">
+
         {/* Upload foto profil */}
         <div className="flex flex-col items-center gap-3">
           <Avatar src={preview} alt={profile.displayName} size="xl" />
-          <input ref={fileRef} type="file" accept="image/*" onChange={handlePhotoChange} className="hidden" />
+          <input
+            ref={fileRef}
+            type="file"
+            accept="image/*"
+            onChange={handlePhotoChange}
+            className="hidden"
+          />
           <Button type="button" variant="ghost" size="sm" onClick={() => fileRef.current?.click()}>
             Ganti Foto
           </Button>
         </div>
 
-        <FormField label="Nama Tampilan" error={errors.displayName?.message} required {...register("displayName")} />
+        <FormField
+          label="Nama Tampilan"
+          error={errors.displayName?.message}
+          required
+          {...register('displayName')}
+        />
 
-        <FormField label="Username" error={errors.username?.message} hint="Hanya huruf, angka, dan underscore" required {...register("username")} />
+        <FormField
+          label="Username"
+          error={errors.username?.message}
+          hint="Hanya huruf, angka, dan underscore"
+          required
+          {...register('username')}
+        />
 
+        {/* Bio — textarea manual karena FormField tidak support textarea */}
         <div className="flex flex-col gap-1.5">
-          <label className="text-sm font-medium text-[#cbd5e1]">Bio</label>
+          <label className="text-sm font-medium text-[var(--color-text-secondary)]">
+            Bio
+          </label>
           <textarea
-            {...register("bio")}
+            {...register('bio')}
             rows={3}
             placeholder="Ceritakan tentang dirimu..."
-            className="w-full bg-[#0f172a] border border-[#334155] rounded-lg
-              px-4 py-2.5 text-white placeholder:text-[#94a3b8] text-sm
-              focus:outline-none focus:ring-2 focus:ring-[#137fec] resize-none"
+            className="
+              w-full rounded-lg px-4 py-2.5 text-sm resize-none
+              bg-[var(--color-input-bg)]
+              border border-[var(--color-input-border)]
+              text-[var(--color-text-primary)]
+              placeholder:text-[var(--color-text-subtle)]
+              focus:outline-none focus:ring-2 focus:ring-[#137fec]
+              hover:border-[#137fec]/50
+              transition-colors
+            "
           />
-          {errors.bio && <span className="text-[#ef4444] text-xs">{errors.bio.message}</span>}
+          {errors.bio && (
+            <span className="text-[var(--color-error)] text-xs">{errors.bio.message}</span>
+          )}
         </div>
 
         <div className="flex gap-3 pt-2">
@@ -80,6 +98,7 @@ export const EditProfileModal = ({ isOpen, onClose, profile }: EditProfileModalP
             Simpan
           </Button>
         </div>
+
       </form>
     </Modal>
   );
