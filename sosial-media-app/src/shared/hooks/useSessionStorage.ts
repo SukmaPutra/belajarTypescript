@@ -1,11 +1,10 @@
-// shared/hooks/useLocalStorage.ts
+// shared/hooks/useSessionStorage.ts
 import { useState } from 'react';
-import { STORAGE_KEYS } from '@/shared/constant';
 
-export const useLocalStorage = <T>(key: string,initialValue: T) => {
+export const useSessionStorage = <T>(key: string, initialValue: T) => {
   const [storedValue, setStoredValue] = useState<T>(() => {
     try {
-      const item = localStorage.getItem(key);
+      const item = sessionStorage.getItem(key); // ← ganti
       return item ? JSON.parse(item) : initialValue;
     } catch {
       return initialValue;
@@ -15,18 +14,18 @@ export const useLocalStorage = <T>(key: string,initialValue: T) => {
   const setValue = (value: T) => {
     try {
       setStoredValue(value);
-      localStorage.setItem(key, JSON.stringify(value));
+      sessionStorage.setItem(key, JSON.stringify(value)); // ← ganti
     } catch (err) {
-      console.error('useLocalStorage error:', err);
+      console.error('useSessionStorage error:', err);
     }
   };
 
   const removeValue = () => {
     try {
       setStoredValue(initialValue);
-      localStorage.removeItem(key);
+      sessionStorage.removeItem(key); // ← ganti
     } catch (err) {
-      console.error('useLocalStorage error:', err);
+      console.error('useSessionStorage error:', err);
     }
   };
 
