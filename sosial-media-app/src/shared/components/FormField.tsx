@@ -1,5 +1,5 @@
 // shared/components/FormField.tsx
-import { Input } from './input';
+import { Input } from './Input';
 import type { InputHTMLAttributes } from 'react';
 
 interface FormFieldProps extends InputHTMLAttributes<HTMLInputElement> {
@@ -20,13 +20,13 @@ export const FormField = ({
 }: FormFieldProps) => {
   return (
     <div className="flex flex-col gap-1.5 w-full">
-      <label className="text-sm font-medium text-[#cbd5e1]">
+      <label className="text-sm font-medium text-[var(--color-text-secondary)]">
         {label}
         {required && <span className="text-[#ef4444] ml-1">*</span>}
       </label>
       <Input error={error} {...inputProps} />
       {hint && !error && (
-        <span className="text-xs text-[#94a3b8]">{hint}</span>
+        <span className="text-xs text-[var(--color-text-muted)]">{hint}</span>
       )}
     </div>
   );

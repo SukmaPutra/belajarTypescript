@@ -23,9 +23,10 @@ export const Card = ({
   return (
     <div
       className={`
-        bg-[#1e293b] border border-[#334155] rounded-lg
+        bg-(--color-card) border border-(--color-border) rounded-lg
+        shadow-(--shadow-card)
         ${paddingMap[padding]}
-        ${hoverable ? 'hover:bg-[#263548] transition-colors duration-200 cursor-pointer' : ''}
+        ${hoverable ? 'hover:bg-(--color-card-hover) transition-colors duration-200 cursor-pointer' : ''}
         ${className}
       `}
       {...props}

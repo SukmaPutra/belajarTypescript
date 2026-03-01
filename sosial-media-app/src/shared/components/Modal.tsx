@@ -16,25 +16,15 @@ const sizeMap = {
   lg: 'max-w-2xl',
 };
 
-export const Modal = ({
-  isOpen,
-  onClose,
-  title,
-  children,
-  size = 'md',
-}: ModalProps) => {
-  // Lock scroll saat modal terbuka
+export const Modal = ({ isOpen, onClose, title, children, size = 'md' }: ModalProps) => {
   useEffect(() => {
     if (isOpen) document.body.style.overflow = 'hidden';
     else        document.body.style.overflow = '';
     return () => { document.body.style.overflow = ''; };
   }, [isOpen]);
 
-  // Tutup dengan Escape
   useEffect(() => {
-    const handler = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') onClose();
-    };
+    const handler = (e: KeyboardEvent) => { if (e.key === 'Escape') onClose(); };
     document.addEventListener('keydown', handler);
     return () => document.removeEventListener('keydown', handler);
   }, [onClose]);
@@ -44,34 +34,36 @@ export const Modal = ({
   return createPortal(
     <div
       className="fixed inset-0 z-40 flex items-center justify-center p-4"
-      onClick={onClose} // klik backdrop → tutup
+      onClick={onClose}
     >
-      {/* Backdrop */}
-      <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" />
+      {/* Backdrop — pakai CSS variable supaya opacity beda di light/dark */}
+      <div
+        className="absolute inset-0 backdrop-blur-sm"
+        style={{ backgroundColor: 'var(--color-overlay)' }}
+      />
 
       {/* Panel */}
       <div
         className={`
           relative z-50 w-full ${sizeMap[size]}
-          bg-[#1e293b] border border-[#334155]
-          rounded-xl shadow-lg
+          bg-[var(--color-card)] border border-[var(--color-border)]
+          rounded-xl shadow-xl
         `}
-        onClick={e => e.stopPropagation()} // cegah klik dalam modal menutup modal
+        onClick={e => e.stopPropagation()}
       >
-        {/* Header */}
         {title && (
-          <div className="flex items-center justify-between p-4 border-b border-[#334155]">
-            <h2 className="text-lg font-semibold text-white">{title}</h2>
+          <div className="flex items-center justify-between p-4 border-b border-[var(--color-border)]">
+            <h2 className="text-lg font-semibold text-[var(--color-text-primary)]">
+              {title}
+            </h2>
             <button
               onClick={onClose}
-              className="text-[#94a3b8] hover:text-white transition-colors"
+              className="text-[var(--color-text-muted)] hover:text-[var(--color-text-primary)] transition-colors"
             >
               ✕
             </button>
           </div>
         )}
-
-        {/* Content */}
         <div className="p-4">{children}</div>
       </div>
     </div>,

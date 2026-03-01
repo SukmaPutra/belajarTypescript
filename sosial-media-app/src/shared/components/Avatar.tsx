@@ -41,14 +41,14 @@ export const Avatar = ({
         <img
           src={src}
           alt={alt}
-          className={`${sizeMap[size]} rounded-full object-cover bg-[#334155]`}
+          className={`${sizeMap[size]} rounded-full object-cover bg-[var(--color-avatar-bg)]`}
         />
       ) : (
-        // Fallback — inisial atau ikon default
         <div className={`
           ${sizeMap[size]} rounded-full
-          bg-[#1d3557] flex items-center justify-center
-          text-[#acb7c6] font-semibold text-sm
+          bg-[var(--color-avatar-bg)]
+          flex items-center justify-center
+          text-[var(--color-avatar-text)] font-semibold text-sm
         `}>
           {alt.charAt(0).toUpperCase()}
         </div>
@@ -61,7 +61,6 @@ export const Avatar = ({
           bg-[#137fec] rounded-full
           flex items-center justify-center
         `}>
-          {/* Checkmark icon */}
           <svg viewBox="0 0 24 24" fill="white" className="w-full h-full p-0.5">
             <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
           </svg>

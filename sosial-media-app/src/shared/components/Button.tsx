@@ -13,10 +13,12 @@ interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   iconPosition?: 'left' | 'right';
 }
 
+// primary & danger pakai brand colors tetap — tidak berubah antar tema
+// secondary & ghost menggunakan CSS variables agar adaptif
 const variantStyles: Record<Variant, string> = {
   primary:   'bg-[#137fec] hover:bg-[#0d66c2] text-white',
-  secondary: 'bg-[#1e293b] hover:bg-[#334155] text-white border border-[#334155]',
-  ghost:     'bg-transparent hover:bg-[#1e293b] text-[#cbd5e1]',
+  secondary: 'bg-[var(--color-card)] hover:bg-[var(--color-card-hover)] text-[var(--color-text-primary)] border border-[var(--color-border)]',
+  ghost:     'bg-transparent hover:bg-[var(--color-card)] text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)]',
   danger:    'bg-[#ef4444] hover:bg-[#dc2626] text-white',
 };
 
@@ -54,7 +56,7 @@ export const Button = ({
         disabled:opacity-50 disabled:cursor-not-allowed
         focus-visible:outline-none focus-visible:ring-2
         focus-visible:ring-[#137fec] focus-visible:ring-offset-2
-        focus-visible:ring-offset-[#0d1117]
+        focus-visible:ring-offset-[var(--color-bg)]
         ${rounded === 'full' ? 'rounded-full' : 'rounded-lg'}
         ${variantStyles[variant]}
         ${sizeStyles[size]}
@@ -70,7 +72,7 @@ export const Button = ({
         </>
       ) : (
         <>
-          {icon && iconPosition === 'left' && <span aria-hidden="true">{icon}</span>}
+          {icon && iconPosition === 'left'  && <span aria-hidden="true">{icon}</span>}
           {children}
           {icon && iconPosition === 'right' && <span aria-hidden="true">{icon}</span>}
         </>
