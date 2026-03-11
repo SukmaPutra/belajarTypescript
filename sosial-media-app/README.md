@@ -14,6 +14,7 @@
 ## 📋 Table of Contents
 
 - [Tentang Proyek](#-tentang-proyek)
+- [Learning Journey & Roadmap](#️-learning-journey--roadmap)
 - [Tech Stack](#-tech-stack)
 - [Fitur](#-fitur)
 - [Struktur Proyek](#-struktur-proyek)
@@ -29,17 +30,72 @@
 
 ## 🧩 Tentang Proyek
 
-Proyek ini merupakan bagian dari seri **belajar TypeScript** — membangun aplikasi sosial media fullstack menggunakan **React + TypeScript** di sisi frontend dan **Firebase** sebagai backend-as-a-service (BaaS).
+**Somad** (Social Media App) adalah proyek pembelajaran fullstack yang saya bangun secara bertahap — dari yang paling sederhana hingga arsitektur production-ready.
 
-Tujuan utama proyek ini adalah:
-- Memahami implementasi **TypeScript** dalam proyek React nyata
-- Belajar integrasi **Firebase** (Auth, Firestore, Storage, Hosting)
-- Menerapkan konsep **type safety** pada data Firestore
-- Membangun UI yang interaktif dengan React Hooks
+Proyek ini bukan hanya tentang hasil akhirnya, tapi tentang **proses belajarnya**. Setiap fase mencerminkan pemahaman baru yang saya dapatkan, mulai dari React dasar, integrasi Firebase, hingga migrasi ke stack yang lebih scalable.
+
+> _"Saya ingin menunjukkan bahwa belajar fullstack itu bertahap — dan setiap langkah kecil itu penting."_
+
+---
+
+## 🗺️ Learning Journey & Roadmap
+
+### ✅ Phase 1 — React + TypeScript (Foundation)
+> Memahami dasar TypeScript dalam konteks React
+
+- Setup project dengan **Vite + React + TypeScript**
+- Belajar penggunaan `interface`, `type`, dan `generic`
+- Manajemen state dengan `useState` & `useEffect`
+- Komponen reusable dengan props yang strongly-typed
+
+### ✅ Phase 2 — Firebase Integration
+> Menambahkan backend tanpa perlu manage server
+
+- Integrasi **Firestore** sebagai database realtime
+- Autentikasi pengguna dengan **Firebase Auth**
+- Upload & manajemen media dengan **Cloudinary**
+- Deploy ke **Firebase Hosting**
+- Refaktor struktur folder agar lebih **scalable & maintainable**
+
+### 🔄 Phase 3 — Next.js Migration *(In Progress)*
+> Migrasi frontend ke framework yang lebih production-ready
+
+- Migrasi dari **React (Vite) → Next.js**
+- Implementasi **SSR / SSG** untuk performa lebih baik
+- Mengganti Firebase Functions dengan **Next.js API Routes**
+- Optimasi SEO & loading time
+
+### 🔜 Phase 4 — PostgreSQL + Prisma *(Planned)*
+> Belajar relational database dan ORM modern
+
+- Migrasi dari **Firestore → PostgreSQL**
+- Implementasi **Prisma ORM** untuk type-safe database queries
+- Desain database schema dengan relasi yang proper
+- Mengenal konsep **migrations** & **seeding**
+
+### 🔜 Phase 5 — Custom Auth dengan JWT *(Planned)*
+> Memahami autentikasi dari bawah
+
+- Mengganti **Firebase Auth → JWT** custom implementation
+- Belajar konsep **access token & refresh token**
+- Implementasi **middleware** autentikasi di Express.js
+- Hashing password dengan **bcrypt**
+
+---
+
+```
+Phase 1 ──► Phase 2 ──► Phase 3 ──► Phase 4 ──► Phase 5
+React TS    + Firebase   Next.js     PostgreSQL   Custom JWT
+            + Cloudinary + API Route + Prisma     + Express
+```
+
+---
 
 ---
 
 ## 🛠 Tech Stack
+
+> Stack di bawah adalah kondisi **Phase 2 (current)**. Lihat [roadmap](#️-learning-journey--roadmap) untuk rencana upgrade selanjutnya.
 
 | Teknologi | Versi | Kegunaan |
 |-----------|-------|----------|
@@ -265,8 +321,10 @@ Proyek ini menggunakan lisensi [MIT](LICENSE).
 
 <div align="center">
 
-Dibuat dengan ❤️ oleh [Sukma Putra](https://github.com/SukmaPutra) — Bagian dari seri **Belajar TypeScript**
+Dibuat dengan ❤️ oleh [Sukma Putra](https://github.com/SukmaPutra)
 
-⭐ Jika proyek ini membantumu, jangan lupa beri bintang!
+**Somad** adalah bukti nyata bahwa belajar fullstack itu bertahap — dan setiap fase adalah pencapaian. 🚀
+
+⭐ Jika perjalanan belajar ini menginspirasimu, jangan lupa beri bintang!
 
 </div>
